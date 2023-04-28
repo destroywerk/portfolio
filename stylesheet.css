@@ -51,9 +51,9 @@ article .wrapper {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
- flex: 1 0 600px; /* Set the article width and allow it to grow or shrink */
  
-  margin: 5px; /* Add some margin around each article */
+  flex: 1 0 600px; 
+  margin: 5px; 
    background-color: #ffffff;
   padding: 40px;
 
