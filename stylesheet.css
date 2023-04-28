@@ -1,0 +1,125 @@
+/* Set the body element to have a width of 1200px */
+body {
+  width: 100%;
+  margin: 0 auto; /* Center the body element horizontally */
+background-color: #F4FBFC;
+ padding-top: 30px;
+font-family: 'Overpass', sans-serif;
+}
+
+/* Set the header element to be a fixed height with a blue background */
+header {
+  height: 100px;
+  background-color: blue;
+}
+
+/* Style the h1 element in the header */
+header h1 {
+  color: #000;
+  font-size: 24px;
+  line-height: 100px;
+  margin: 0;
+  padding: 0;
+    font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+
+}
+
+
+p {
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+    font-family: 'Open Sans', sans-serif;
+  font-weight: 200;
+}
+
+
+p2 {
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+    font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+}
+
+a {
+  color: black;
+}
+
+article .wrapper {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  flex: 1 0 600px; /* Set the article width and allow it to grow or shrink */
+  margin: 5px; /* Add some margin around each article */
+   background-color: #ffffff;
+  padding: 40px;
+
+    overflow: hidden;
+      display: flex;
+}
+
+
+article .left-column {
+   background-color: #ffffff
+    float: left;
+  width: 50%;
+  padding-right: 80px;
+}
+
+
+
+article.right-column {
+  display: flex;
+  align-items: center;
+}
+
+.right-column img {
+  max-height: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding-top: 0px;
+}
+
+
+/* Style the h2 element in the article */
+article h2 {
+  font-size: 24px;
+  margin: 0;
+  padding: 0px;
+   line-height: 1.5;
+    font-family: 'Open Sans', sans-serif;
+  font-weight: 200;
+}
+
+/* Style the p elements in the article */
+article p {
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0px;
+    font-family: 'Open Sans', sans-serif;
+  font-weight: 200;
+}
+
+article p2 {
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0px;
+    font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+}
+
+
+body {
+  width: 100%;
+}
+
+@media screen and (min-width: 1200px) {
+  body {
+    width: 1200px;
+  }
+}
