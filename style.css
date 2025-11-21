@@ -317,12 +317,14 @@ main {
 
 .text-link-header {
     color: var(--text-active);
-    text-decoration: none; /* Headers usually links now? Prompt said "tim green studio should link..." */
+    text-decoration: underline; /* Always underlined */
+    text-underline-offset: 4px;
     cursor: pointer;
+    transition: color 0.3s ease;
 }
 
 .text-link-header:hover {
-    text-decoration: underline;
+    color: var(--text-inactive); /* #EEDBCC on hover */
 }
 
 /* Work Section */
