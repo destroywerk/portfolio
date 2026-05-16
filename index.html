@@ -1578,38 +1578,46 @@ window.addEventListener('resize', () => { resizeCanvas(); renderCanvas(); });
 
 /* ---- Font-load guard: canvas text uses Syne — don't render until loaded ---- */
 let fontsLoaded = false;
-document.fonts.ready.then(() => { fontsLoaded = true; });
+document.fonts.ready.then(() => { fontsLoaded = true; _metricsCache = null; });
 
 /* ---- Derive canvas text positions from actual DOM span rects ----
    Using getBoundingClientRect() on the real spans is the only truly
-   reliable anchor — no font-metric guesswork, no fallback mismatch.
-   textBaseline:'top' — we use actualBoundingBoxAscent to align the
-   rendered glyph top exactly with the DOM line-box top. ---- */
+   Measure the CSS alphabetic baseline directly by inserting a zero-size
+   probe element — no font-metric maths, no line-height assumptions. ---- */
+let _metricsCache = null;
+window.addEventListener('resize', () => { _metricsCache = null; });
+
 function getMetrics() {
+    if (_metricsCache) return _metricsCache;
     const wrapRect = titleWrap.getBoundingClientRect();
-    const r1 = document.getElementById('hero-line-1').getBoundingClientRect();
-    const r2 = document.getElementById('hero-line-2').getBoundingClientRect();
+    const lineEl1  = document.getElementById('hero-line-1');
+    const lineEl2  = document.getElementById('hero-line-2');
     const fs = parseFloat(window.getComputedStyle(heroTitleEl).fontSize);
-    const cf = fs * DPR;
-    offCtx.font = `800 ${cf}px 'Syne', system-ui, sans-serif`;
-    offCtx.textBaseline = 'top';
-    const m = offCtx.measureText('TIM');
-    // actualBoundingBoxAscent is negative when glyphs sit below the 'top' baseline.
-    // Adding it shifts the drawing point up so the glyph bounding-box top
-    // lands exactly at the DOM line-box top — no halfLeading guesswork needed.
-    const asc = (isFinite(m.actualBoundingBoxAscent) ? m.actualBoundingBoxAscent : 0);
-    return {
-        cf,
-        x:  (r1.left - wrapRect.left) * DPR,
-        y1: (r1.top  - wrapRect.top)  * DPR + asc,
-        y2: (r2.top  - wrapRect.top)  * DPR + asc,
+
+    // A zero-size inline-block with vertical-align:baseline sits exactly
+    // at the parent line's alphabetic baseline — measured via getBoundingClientRect.
+    function baselineY(lineEl) {
+        const p = document.createElement('span');
+        p.style.cssText = 'display:inline-block;width:0;height:0;vertical-align:baseline;overflow:hidden;';
+        lineEl.appendChild(p);
+        const y = (p.getBoundingClientRect().top - wrapRect.top) * DPR;
+        lineEl.removeChild(p);
+        return y;
+    }
+
+    _metricsCache = {
+        cf: fs * DPR,
+        x:  (lineEl1.getBoundingClientRect().left - wrapRect.left) * DPR,
+        y1: baselineY(lineEl1),
+        y2: baselineY(lineEl2),
     };
+    return _metricsCache;
 }
 
 /* ---- Draw both text lines onto a context ---- */
 function fillLines(c, m, dx, style) {
     c.font = `800 ${m.cf}px 'Syne', system-ui, sans-serif`;
-    c.textBaseline = 'top';
+    c.textBaseline = 'alphabetic';
     if ('letterSpacing' in c) c.letterSpacing = `${Math.round(m.cf * -0.03)}px`;
     c.fillStyle = style;
     c.fillText('TIM',   m.x + dx, m.y1);
