@@ -4,17 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tim Green — Designer</title>
-    <meta name="description" content="Tim Green — Principal Product Designer. 14 years solving complex problems elegantly. Ex-Google. Ex-Personio. Now at Preply.">
+    <meta name="description" content="Tim Green — Principal Product Designer. 15 years solving complex problems elegantly. Ex-Google. Ex-Personio. Now at Preply.">
     <!-- Open Graph / link preview -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://timgreen.design/">
     <meta property="og:title" content="Tim Green. Artist + Designer.">
-    <meta property="og:description" content="Principal Product Designer. 14 years solving complex problems elegantly. Ex-Google. Ex-Personio. Now at Preply.">
-    <meta property="og:image" content="https://timgreen.design/assets/Preview.png">
+    <meta property="og:description" content="Principal Product Designer. 15 years solving complex problems elegantly. Ex-Google. Ex-Personio. Now at Preply.">
+    <meta property="og:image" content="https://timgreen.design/assets/Preview.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="644">
+    <meta property="og:image:type" content="image/jpeg">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Tim Green. Artist + Designer.">
-    <meta name="twitter:description" content="Principal Product Designer. 14 years solving complex problems elegantly. Ex-Google. Ex-Personio. Now at Preply.">
-    <meta name="twitter:image" content="https://timgreen.design/assets/Preview.png">
+    <meta name="twitter:description" content="Principal Product Designer. 15 years solving complex problems elegantly. Ex-Google. Ex-Personio. Now at Preply.">
+    <meta name="twitter:image" content="https://timgreen.design/assets/Preview.jpg">
     <link rel="icon" type="image/x-icon" href="assets/favicon_io (1)/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon_io (1)/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon_io (1)/favicon-16x16.png">
@@ -61,7 +64,7 @@
     --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overscroll-behavior: none; }
 
 body {
     font-family: var(--font-head);
@@ -129,7 +132,7 @@ nav {
     font-size: 0.88rem; letter-spacing: 0.08em; text-transform: uppercase;
     color: #fff;
 }
-.nav-links { display: flex; gap: 2.5rem; list-style: none; }
+.nav-links { display: flex; gap: 2.5rem; list-style: none; position: absolute; left: 50%; transform: translateX(-50%); }
 .nav-links a {
     font-family: var(--font-mono); font-size: 0.62rem;
     letter-spacing: 0.12em; text-transform: uppercase; color: #fff;
@@ -137,6 +140,8 @@ nav {
 }
 .nav-links a:hover { opacity: .5; }
 .nav-clock { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.06em; color: #fff; }
+.nav-logo-clock { display: none; }
+.nav-left { display: flex; flex-direction: column; justify-content: center; }
 
 /* ===== HERO ===== */
 .hero {
@@ -241,29 +246,37 @@ nav {
 input[type=range] {
     -webkit-appearance: none;
     appearance: none;
-    width: 100%; height: 2px;
-    background: rgba(255,255,255,0.12);
+    width: 100%; height: 48px;
+    background: transparent;
     border-radius: 0;
     outline: none;
     cursor: none;
 }
 input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 8px; height: 8px;
-    background: #fff;
+    width: 48px; height: 48px;
+    /* Visual dot is ~14px via gradient; full 48px square is the touch target */
+    background: radial-gradient(circle, #fff 7px, transparent 7px);
     border-radius: 50%;
     cursor: none;
     transition: transform .15s;
+    /* Centre 48px thumb on the 2px track: -(48/2 - 2/2) = -23px */
+    margin-top: -23px;
 }
 input[type=range]::-moz-range-thumb {
-    width: 8px; height: 8px;
-    background: #fff;
+    width: 48px; height: 48px;
+    background: radial-gradient(circle, #fff 7px, transparent 7px);
     border-radius: 50%;
     border: none;
     cursor: none;
 }
 input[type=range]::-webkit-slider-runnable-track {
-    background: transparent;
+    background: rgba(255,255,255,0.12);
+    height: 2px;
+}
+input[type=range]::-moz-range-track {
+    background: rgba(255,255,255,0.12);
+    height: 2px;
 }
 input[type=range]:active::-webkit-slider-thumb {
     transform: scale(1.5);
@@ -285,11 +298,16 @@ input[type=range]:active::-webkit-slider-thumb {
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: rgba(255,255,255,0.3);
+    white-space: nowrap;
 }
 .hero-descriptor {
     font-size: clamp(0.95rem, 2vw, 1.5rem);
     font-weight: 500;
     color: #fff;
+    height: 1.4em;
+    overflow: hidden;
+    white-space: nowrap;
+}
     letter-spacing: -0.01em;
     min-height: 1.4em;
 }
@@ -343,7 +361,6 @@ input[type=range]:active::-webkit-slider-thumb {
     text-transform: uppercase;
     padding: 0.6rem 1rem;
     cursor: none;
-    width: 110px;
     text-align: center;
     transition: border-color .2s, color .2s, background .2s;
     flex-shrink: 0;
@@ -352,6 +369,16 @@ input[type=range]:active::-webkit-slider-thumb {
 .hero-btn:active { background: rgba(255,255,255,0.07); }
 .hero-btn.reset { color: rgba(255,255,255,0.25); border-color: rgba(255,255,255,0.1); }
 .hero-btn.reset:hover { color: rgba(255,255,255,0.6); border-color: rgba(255,255,255,0.4); }
+
+.hero-actions {
+    position: absolute;
+    top: 5rem; right: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-end;
+    z-index: 2;
+}
 
 /* ===== MARQUEE ===== */
 .marquee-wrap {
@@ -388,7 +415,7 @@ input[type=range]:active::-webkit-slider-thumb {
     padding-bottom: 1.5rem;
     border-bottom: 1px solid var(--border);
 }
-.section-title { font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+.section-title { font-size: clamp(1.6rem, 3.5vw, 3.5rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
 .section-count { font-family: var(--font-mono); font-size: 0.62rem; color: var(--muted); }
 
 /* ===== WORK ===== */
@@ -426,11 +453,21 @@ input[type=range]:active::-webkit-slider-thumb {
     user-select: none; color: rgba(255,255,255,0.05);
 }
 .project-card:hover .project-thumb img { transform: scale(1.04); }
+.project-card::before {
+    content: '';
+    position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(to top, rgba(248,247,244,0.96) 0%, rgba(248,247,244,0.55) 50%, transparent 100%);
+    opacity: 1;
+    transition: opacity .35s var(--ease);
+}
+.project-card:hover::before { opacity: 0; }
+
 .project-card::after {
     content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,.75) 0%, rgba(0,0,0,.15) 55%, transparent 100%);
-    opacity: 0; transition: opacity .4s var(--ease);
+    position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(to top, rgba(0,0,0,.8) 0%, rgba(0,0,0,.15) 55%, transparent 100%);
+    opacity: 0;
+    transition: opacity .35s var(--ease);
 }
 .project-card:hover::after { opacity: 1; }
 
@@ -443,17 +480,18 @@ input[type=range]:active::-webkit-slider-thumb {
 .project-cat {
     font-family: var(--font-mono); font-size: 0.56rem;
     letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--muted); margin-bottom: 0.35rem; transition: color .3s;
+    color: rgba(0,0,0,0.45); margin-bottom: 0.35rem; transition: color .3s;
 }
 .project-card:hover .project-cat { color: rgba(255,255,255,0.5); }
 .project-name {
     font-size: clamp(1.4rem, 3vw, 2.5rem); font-weight: 700;
     letter-spacing: -0.02em; line-height: 1.05; transition: color .3s;
+    color: #0f0f0f;
 }
 .project-card:hover .project-name { color: #fff; }
 .project-year {
     font-family: var(--font-mono); font-size: 0.56rem;
-    letter-spacing: 0.08em; color: var(--muted); margin-top: 0.45rem; transition: color .3s;
+    letter-spacing: 0.08em; color: rgba(0,0,0,0.4); margin-top: 0.45rem; transition: color .3s;
 }
 .project-card:hover .project-year { color: rgba(255,255,255,0.4); }
 
@@ -478,16 +516,17 @@ input[type=range]:active::-webkit-slider-thumb {
 .statement-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 4rem;
+    gap: 0;
     align-items: start;
 }
 .statement-text {
     font-size: clamp(1.6rem, 3.5vw, 3.5rem); font-weight: 800;
     color: #fff; letter-spacing: -0.03em; line-height: 1.05;
+    padding-right: 4rem;
 }
 .statement-aside { }
 .statement-bio {
-    max-width: 45ch; font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,0.55);
+    max-width: 680px; font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,0.55);
     font-family: var(--font-body);
 }
 .statement-bio strong { color: rgba(255,255,255,0.85); font-weight: 600; }
@@ -510,7 +549,7 @@ input[type=range]:active::-webkit-slider-thumb {
 }
 .interest-card {
     background: var(--bg); position: relative; overflow: hidden;
-    padding: 2.5rem; min-height: 400px;
+    padding: 2rem; min-height: 400px;
     display: flex; flex-direction: column; justify-content: flex-end;
     cursor: none;
 }
@@ -518,11 +557,23 @@ input[type=range]:active::-webkit-slider-thumb {
 .interest-thumb img,
 .interest-thumb video {
     width: 100%; height: 100%; object-fit: cover;
-    transition: transform .7s var(--ease), filter .4s;
-    filter: grayscale(60%) contrast(1.1);
+    transition: transform .7s var(--ease);
 }
 .interest-card:hover .interest-thumb img,
-.interest-card:hover .interest-thumb video { transform: scale(1.04); filter: grayscale(0%) contrast(1.05); }
+.interest-card:hover .interest-thumb video { transform: scale(1.04); }
+
+/* Painting slideshow */
+.painting-slideshow { position: absolute; inset: 0; }
+.painting-slide {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%; object-fit: cover;
+    opacity: 0;
+    transition: opacity 1.2s ease, transform .7s var(--ease);
+}
+.painting-slide.active { opacity: 1; }
+.interest-card:hover .painting-slide.active {
+    transform: scale(1.04);
+}
 .interest-card::after {
     content: ''; position: absolute; inset: 0;
     background: linear-gradient(to top, rgba(0,0,0,.82) 0%, rgba(0,0,0,.3) 50%, transparent 100%);
@@ -591,20 +642,8 @@ input[type=range]:active::-webkit-slider-thumb {
     opacity: 0;
     transition: opacity 2s ease;
 }
-.portrait-wrap:hover .portrait-original { opacity: 1; }
-.portrait-light {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center top;
-    opacity: 0;
-    transition: opacity 1.2s ease;
-    pointer-events: none;
-}
-.portrait-wrap.lit .portrait-light  { opacity: 1; }
-.portrait-wrap.lit .portrait-original { opacity: 0 !important; }
+.portrait-wrap:hover .portrait-original,
+.portrait-wrap.portrait-toggled .portrait-original { opacity: 1; }
 /* Gradient blends portrait into #0c0b09 background on all edges */
 .portrait-wrap::after {
     content: '';
@@ -712,8 +751,23 @@ input[type=range]:active::-webkit-slider-thumb {
 
 /* ===== MOBILE ===== */
 @media (max-width: 768px) {
-    nav { padding: 1.25rem; }
+    nav { padding: 1.25rem; align-items: flex-start; }
     .nav-clock { display: none; }
+    .nav-logo-clock {
+        position: fixed;
+        top: 4.6rem;
+        left: 1.25rem;
+        display: block;
+        font-family: var(--font-mono);
+        font-size: 0.44rem;
+        letter-spacing: 0.14em;
+        color: rgba(255,255,255,0.55);
+        white-space: nowrap;
+        pointer-events: none;
+    }
+    .hero { min-height: 100svh; }
+    .hero-actions { top: 4rem; right: 1.25rem; }
+    .nav-links { position: static; left: auto; transform: none; margin-left: auto; padding-right: 1.25rem; }
 
     /* Hero — scale title purely off viewport width so it never overflows */
     .hero { padding: 1.25rem; }
@@ -743,6 +797,7 @@ input[type=range]:active::-webkit-slider-thumb {
     .work { padding: 4rem 1.25rem; }
     .project-grid { grid-template-columns: 1fr; } /* 1 column on mobile */
     .project-card { min-height: 280px; padding: 1.25rem; }
+    .interest-card { padding: 1.25rem; }
 
     /* Statement */
     .statement { padding: 5rem 1.25rem; }
@@ -759,23 +814,91 @@ input[type=range]:active::-webkit-slider-thumb {
     .portrait-wrap {
         position: relative;
         width: 100%;
-        height: 60vw;
-        max-height: 380px;
+        height: auto;
+        overflow: visible;
         top: auto; right: auto; bottom: auto;
         margin-bottom: 2.5rem;
     }
     .portrait-wrap::after {
+        display: block;
         background:
-            linear-gradient(to bottom, #0c0b09 0%, rgba(12,11,9,0) 30%),
-            linear-gradient(to top,    #0c0b09 0%, rgba(12,11,9,0) 25%);
+            linear-gradient(to right, #0c0b09 0%, rgba(12,11,9,0) 25%),
+            linear-gradient(to left,  #0c0b09 0%, rgba(12,11,9,0) 25%),
+            linear-gradient(to bottom, #0c0b09 0%, rgba(12,11,9,0) 20%);
     }
+    .portrait-canvas { height: auto; object-fit: contain; object-position: center top; }
     .footer-bottom { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
+    .footer-links a[href*="warpsoup"] { display: none; }
 
     /* Overlay */
     .overlay { flex-direction: column; }
-    .overlay-info { width: 100%; padding: 2rem 1.5rem; }
+    .ov-inner { flex-direction: column; }
+    .overlay-info { width: 100%; padding: 2rem 1.5rem 3rem; }
     .overlay-asset { flex: none; height: 45vh; border-right: none; border-bottom: 1px solid rgba(255,255,255,.07); }
+    .overlay-nav { display: none; }
+    .overlay-close { display: none; }
 }
+
+/* mobile close button — lives outside #overlay so position:fixed is always viewport-relative */
+#ov-close-mob-outer {
+    display: none;
+    position: fixed;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(10,10,8,0.9);
+    border: 1px solid rgba(255,255,255,.35);
+    color: rgba(255,255,255,.85);
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    padding: 0.8rem 2.5rem;
+    cursor: pointer;
+    z-index: 9000;
+    white-space: nowrap;
+    transition: border-color .2s, color .2s;
+}
+#ov-close-mob-outer:active { color: #fff; border-color: rgba(255,255,255,.7); }
+/* hide the legacy inner buttons */
+#ov-close-mob { display: none !important; }
+
+/* ov-inner */
+.ov-inner {
+    display: flex; flex: 1; min-width: 0;
+    will-change: transform, opacity;
+    z-index: 1;
+}
+
+/* overlay nav zones */
+.overlay-nav {
+    position: absolute; top: 5rem; bottom: 0; width: 100px;
+    background: none; border: none; cursor: none; z-index: 30;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity .4s var(--ease);
+    pointer-events: none;
+}
+.overlay.open .overlay-nav { pointer-events: all; }
+.overlay-nav--prev { left: 0; }
+.overlay-nav--next { right: 0; }
+.overlay.open .overlay-nav:hover { opacity: 1; }
+.overlay-nav svg {
+    width: 22px; height: 22px;
+    color: rgba(255,255,255,.45);
+    pointer-events: none;
+    transition: color .2s, transform .3s var(--ease);
+}
+.overlay-nav--prev svg { color: rgba(0,0,0,.55); }
+.overlay-nav:hover svg { color: rgba(255,255,255,.9); }
+.overlay-nav--prev:hover svg { color: rgba(0,0,0,.9); }
+.overlay-nav--prev:hover svg { transform: translateX(-3px); }
+.overlay-nav--next:hover svg { transform: translateX(3px); }
+
+/* nav transition keyframes */
+@keyframes ov-exit-left  { from { transform: translateX(0)     scale(1);    opacity: 1; } to { transform: translateX(-4%) scale(0.97); opacity: 0; } }
+@keyframes ov-exit-right { from { transform: translateX(0)     scale(1);    opacity: 1; } to { transform: translateX( 4%) scale(0.97); opacity: 0; } }
+@keyframes ov-enter-right{ from { transform: translateX( 4%)   scale(0.97); opacity: 0; } to { transform: translateX(0)   scale(1);    opacity: 1; } }
+@keyframes ov-enter-left { from { transform: translateX(-4%)   scale(0.97); opacity: 0; } to { transform: translateX(0)   scale(1);    opacity: 1; } }
 
 /* Extra-small — phones under 400px */
 @media (max-width: 400px) {
@@ -806,13 +929,16 @@ input[type=range]:active::-webkit-slider-thumb {
 
 <!-- Nav -->
 <nav>
-    <a href="/" class="nav-logo">TG</a>
+    <div class="nav-left">
+        <a href="/" class="nav-logo">TG</a>
+        <div class="nav-logo-clock clock-display" id="clock-mob"></div>
+    </div>
     <ul class="nav-links">
         <li><a href="#work">Work</a></li>
         <li><a href="#about">About</a></li>
         <li><a href="#contact">Contact</a></li>
     </ul>
-    <div class="nav-clock" id="clock"></div>
+    <div class="nav-clock clock-display" id="clock"></div>
 </nav>
 
 <!-- Hero -->
@@ -853,7 +979,7 @@ input[type=range]:active::-webkit-slider-thumb {
             </div>
             <div class="sl-item">
                 <div class="sl-top">
-                    <span class="sl-label">Ribbed</span>
+                    <span class="sl-label">Blocked</span>
                     <span class="sl-val" id="val-ribbed">0</span>
                 </div>
                 <input type="range" id="sl-ribbed" min="0" max="100" value="0" step="1">
@@ -869,13 +995,17 @@ input[type=range]:active::-webkit-slider-thumb {
             <div class="hero-mid">
                 <div class="hero-scroll">Scroll</div>
             </div>
-            <div class="hero-right">
-                <button class="hero-btn" id="randomise-btn">Randomise</button>
-                <button class="hero-btn reset" id="reset-btn">Reset</button>
-            </div>
+            <div class="hero-right"></div>
         </div>
 
     </div>
+
+    <!-- Top-right actions (scroll away with hero) -->
+    <div class="hero-actions">
+        <button class="hero-btn" id="randomise-btn">Randomise</button>
+        <button class="hero-btn reset" id="reset-btn">Reset</button>
+    </div>
+
 </section>
 
 <!-- Marquee -->
@@ -903,8 +1033,8 @@ input[type=range]:active::-webkit-slider-thumb {
         </p>
         <div class="statement-aside reveal">
             <p class="statement-bio">
-                I've worked in <strong>product design for 14 years</strong> and graphic design for 5 before that. I've been supporting complex organisational structures across <strong>HR SaaS, enterprise mobility, wearables</strong> and consumer products as a Principal Product Designer.<br><br>
-                Previously at <strong>Google for 9 years</strong> working across mobile, wearables and tablet to launch Android Enterprise, Pixel Watch and Pixel Tablet — and most recently at Personio. Now at <strong>Preply</strong>, working on language learning at scale.
+                I've worked in <strong>product design for 15 years</strong> and graphic design for 5 before that. I've worked as a <strong>Principal Product Designer</strong> simplifying <strong>complex systems in HR SaaS</strong>, defined <strong>Material design for enterprise</strong> mobility, designed core elements of <strong>Pixel OS for 2+ billion people</strong>, created the <strong>wearables experience principles</strong> for Google, and rebuilt consumer products from the ground up.<br><br>
+                Previously at <strong>Google for 9 years</strong> working across mobile, wearables and tablet to launch Android Enterprise, Pixel Watch and Pixel Tablet, and most recently at Personio solving complex organisational structures. I'm currently at <strong>Preply</strong>, working on language learning at scale.
             </p>
         </div>
     </div>
@@ -920,11 +1050,18 @@ input[type=range]:active::-webkit-slider-thumb {
         </div>
     </div>
     <div class="interests-grid">
-        <a href="https://www.instagram.com/timgreen.studio/" target="_blank" class="interest-card reveal">
-            <div class="interest-thumb">
-                <video autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(0.25,0.46,0.45,0.94),filter .4s;filter:grayscale(60%) contrast(1.1)">
-                    <source src="studio.webm" type="video/webm">
-                </video>
+        <a href="https://www.instagram.com/timgreen.studio/" target="_blank" class="interest-card reveal" id="studio-card">
+            <div class="interest-thumb painting-slideshow">
+                <img src="assets/paintings/01.png" alt="Painting" class="painting-slide active">
+                <img src="assets/paintings/02.png" alt="Painting" class="painting-slide">
+                <img src="assets/paintings/03.png" alt="Painting" class="painting-slide">
+                <img src="assets/paintings/04.png" alt="Painting" class="painting-slide">
+                <img src="assets/paintings/05.png" alt="Painting" class="painting-slide">
+                <img src="assets/paintings/06.png" alt="Painting" class="painting-slide">
+                <img src="assets/paintings/07.png" alt="Painting" class="painting-slide">
+                <img src="assets/paintings/08.png" alt="Painting" class="painting-slide">
+                <img src="assets/paintings/09.png" alt="Painting" class="painting-slide">
+                <img src="assets/paintings/10.png" alt="Painting" class="painting-slide">
             </div>
             <div class="interest-content">
                 <div class="interest-num">01</div>
@@ -952,7 +1089,6 @@ input[type=range]:active::-webkit-slider-thumb {
     <div class="portrait-wrap" id="portrait-wrap">
         <img src="portrait-divide.png" class="portrait-canvas" alt="Tim Green — Divide by Tone">
         <img src="portrait-og.png" class="portrait-original" alt="Tim Green">
-        <img src="portrait-light.png" class="portrait-light" alt="Tim Green — Light">
     </div>
     <div class="footer-cta">
         <div class="footer-headline reveal">Let's<br>talk.</div>
@@ -973,15 +1109,28 @@ input[type=range]:active::-webkit-slider-thumb {
 <!-- Project Overlay -->
 <div class="overlay" id="overlay" role="dialog" aria-modal="true">
     <button class="overlay-close" id="overlay-close" aria-label="Close">×</button>
-    <div class="overlay-asset" id="ov-asset"></div>
-    <div class="overlay-info">
-        <div class="ov-cat" id="ov-cat"></div>
-        <div class="ov-title" id="ov-title"></div>
-        <div class="ov-year" id="ov-year"></div>
-        <div class="ov-desc" id="ov-desc"></div>
-        <a class="ov-link" id="ov-link" href="#" target="_blank" style="display:none">View project ↗</a>
+    <button class="overlay-nav overlay-nav--prev" id="ov-prev" aria-label="Previous project">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M15 19l-7-7 7-7"/></svg>
+    </button>
+    <button class="overlay-nav overlay-nav--next" id="ov-next" aria-label="Next project">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M9 5l7 7-7 7"/></svg>
+    </button>
+    <div id="ov-inner" class="ov-inner">
+        <div class="overlay-asset" id="ov-asset"></div>
+        <div class="overlay-info">
+            <div class="ov-cat" id="ov-cat"></div>
+            <div class="ov-title" id="ov-title"></div>
+            <div class="ov-year" id="ov-year"></div>
+            <div class="ov-desc" id="ov-desc"></div>
+            <a class="ov-link" id="ov-link" href="#" target="_blank" style="display:none">View project ↗</a>
+        </div>
     </div>
+    <button class="overlay-close-mob" id="overlay-close-mob" style="display:none">Close</button>
+    <button id="ov-close-mob">CLOSE</button>
 </div>
+
+<!-- Mobile close button — outside overlay so position:fixed is viewport-relative -->
+<button id="ov-close-mob-outer" style="display:none">CLOSE</button>
 
 <script>
 /* ============================================================
@@ -994,8 +1143,8 @@ const PROJECTS = [
         year: "2025 — Present",
         bg: "bg-dark-2", initial: "PR",
         thumb: "assets/swissdgets.gif",
-        imgs: ["assets/swissdgets.gif", "assets/preply.gif"],
-        desc: "Area Lead for Growth, leading 7 squads to create a more cohesive, goal-focused experience for students.",
+        imgs: ["assets/swissdgets.gif", "assets/preply2.gif"],
+        desc: "Area Lead for Growth, leading 7 squads and their designers to deliver the most cohesive and student focused experience possible. Working personally to define a more cohesive, goal-focused experience, vision work for the E2E funnel, connection between initial and ongoing learning experiences, and uplifting the over design quality and exploration.",
     },
     {
         name: "Warp Soup",
@@ -1012,7 +1161,7 @@ const PROJECTS = [
         year: "2022 — 2025",
         bg: "bg-dark-4", initial: "PE",
         img: "assets/personio.gif",
-        desc: "Supporting complex organisational structures at Europe's leading HR SaaS platform. Working as Principal Product Designer on the systems and frameworks that help large organisations run smoothly.",
+        desc: "Supporting complex organisational structures at Europe's leading HR SaaS platform. Working as Principal Product Designer to redesign the key surfaces and develop the systems and frameworks that help large organisations run smoothly.",
     },
     {
         name: "Bamboo House Radio",
@@ -1036,15 +1185,15 @@ const PROJECTS = [
         year: "2019 — 2021",
         bg: "bg-dark-2", initial: "PW",
         img: "assets/pixelwatch.gif",
-        desc: "Consumer wearable OS design for Google's first Pixel Watch. Responsible for core interaction design, watch face systems, and the overall UX framework for Wear OS across the wrist.",
+        desc: "Consumer wearable OS design for Google's first Pixel Watch. Responsible for core interaction design, all core 1P apps, and the overall UX framework for app experiences across Wear OS and wearables.",
     },
     {
-        name: "Android Enterprise",
+        name: "Android",
         cat: "Product Design · Google",
         year: "2014 — 2019",
         bg: "bg-dark-1", initial: "AE",
-        img: "assets/android.gif",
-        desc: "Enterprise mobility management platform for Google. Worked across the full Android Enterprise product suite, enabling businesses to deploy and manage Android devices at scale across mobile, wearable and tablet form factors.",
+        img: "assets/android.png",
+        desc: "Designed the Work Profile, rich text editing in Gmail, and worked on countless Enterprise features for Android L, M, N, O & P releases including a registered patent \"Passcodes for computing devices\". Worked across the full Android Enterprise product suite, enabling businesses to deploy and manage Android devices at scale across mobile, wearable and tablet form factors.",
     },
     {
         name: "Divide",
@@ -1052,7 +1201,7 @@ const PROJECTS = [
         year: "2011 — 2014",
         bg: "bg-dark-3", initial: "DV",
         img: "assets/divide.gif",
-        desc: "Work in progress — description coming soon.",
+        desc: "Led design on the Android, iOS & iPadOS Apps (which itself comprised of Mail, Calendar, Contacts, Messages, Tasks, Browser) & created a web-based automated system for creating customised builds of the App for clients. I also worked to develop the brand and help to establish design as a discipline at the company.",
     },
     {
         name: "Werds",
@@ -1060,20 +1209,21 @@ const PROJECTS = [
         year: "2025",
         bg: "bg-dark-4", initial: "WD",
         img: "assets/werdsapp.gif",
-        desc: "Work in progress — description coming soon.",
+        desc: "An iOS app I built for my two sons to navigate a list of esoteric words I've been keeping for over a decade.",
     },
     {
         name: "Random Design Work",
         cat: "Various · Freelance",
         year: "2010 — Present",
         bg: "bg-dark-1", initial: "RD",
+        img: "assets/random.gif",
         desc: "A collection of freelance, experimental and graphic design work spanning over a decade. Brand identity, editorial, type design, motion and print.",
     },
 ];
 
 const DESCRIPTORS = [
     "Solving complex problems elegantly.",
-    "14 years in product design.",
+    "15 years in product design.",
     "Principal Product Designer.",
     "System thinker. Detail obsessive.",
     "Worked across OS, App, Wearable, Tablet, SaaS.",
@@ -1142,7 +1292,16 @@ setInterval(() => {
 function tick() {
     const n = new Date();
     const p = v => String(v).padStart(2, '0');
-    document.getElementById('clock').textContent = `${p(n.getHours())}:${p(n.getMinutes())}:${p(n.getSeconds())} GMT`;
+    const parts = new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'Europe/London',
+        hour: '2-digit', minute: '2-digit', second: '2-digit',
+        hour12: false, timeZoneName: 'short'
+    }).formatToParts(n);
+    const get = t => parts.find(p => p.type === t)?.value ?? '';
+    const tz = get('timeZoneName');
+    const time = `${get('hour')}:${get('minute')}:${get('second')}`;
+    const text = `LOCAL TIME \u2022 ${time} ${tz}`;
+    document.querySelectorAll('.clock-display').forEach(el => el.textContent = text);
 }
 tick(); setInterval(tick, 1000);
 
@@ -1173,6 +1332,11 @@ if (!isMobile) {
         el.addEventListener('mouseenter', () => setCursorState(true, 'View'));
         el.addEventListener('mouseleave', () => setCursorState(false));
     });
+
+    // Close button gets its own label
+    const closeBtn = document.getElementById('overlay-close');
+    closeBtn.addEventListener('mouseenter', () => setCursorState(true, 'Close'));
+    closeBtn.addEventListener('mouseleave', () => setCursorState(false));
 }
 
 /* ============================================================
@@ -1265,8 +1429,11 @@ document.querySelectorAll('.project-card').forEach(card => {
 const overlay = document.getElementById('overlay');
 const ovAsset = document.getElementById('ov-asset');
 let imgCycleInterval = null;
+let currentProjectIdx = 0;
+let isNavTransitioning = false;
 
-function openOverlay(idx) {
+function openOverlay(idx, isNav = false) {
+    currentProjectIdx = idx;
     const p = PROJECTS[idx];
     document.getElementById('ov-cat').textContent = p.cat;
     document.getElementById('ov-title').textContent = p.name;
@@ -1288,9 +1455,9 @@ function openOverlay(idx) {
             setTimeout(() => {
                 cycleImg.src = p.imgs[cycleIdx];
                 cycleImg.style.transition = '';
-                cycleImg.style.opacity = '';
+                cycleImg.style.opacity = '1';
             }, 460);
-        }, 6000);
+        }, 5000);
     } else if (p.img) {
         ovAsset.innerHTML = `<img src="${p.img}" alt="${p.name}">`;
     } else {
@@ -1305,18 +1472,58 @@ function openOverlay(idx) {
     }
 
     overlay.classList.add('open');
-    document.body.style.overflow = 'hidden';
+    if (!isNav) document.body.style.overflow = 'hidden';
+    const closeMob = document.getElementById('ov-close-mob-outer');
+    if (closeMob && window.innerWidth <= 768) closeMob.style.display = 'block';
 }
 
 function closeOverlay() {
     if (imgCycleInterval) { clearInterval(imgCycleInterval); imgCycleInterval = null; }
     overlay.classList.remove('open');
     document.body.style.overflow = '';
+    const closeMob = document.getElementById('ov-close-mob-outer');
+    if (closeMob) closeMob.style.display = 'none';
+}
+
+function navigateOverlay(dir) {
+    if (!overlay.classList.contains('open') || isNavTransitioning) return;
+    const newIdx = (currentProjectIdx + dir + PROJECTS.length) % PROJECTS.length;
+    const inner = document.getElementById('ov-inner');
+    isNavTransitioning = true;
+
+    inner.style.animation = dir > 0
+        ? 'ov-exit-left 0.22s cubic-bezier(0.4,0,0.6,1) forwards'
+        : 'ov-exit-right 0.22s cubic-bezier(0.4,0,0.6,1) forwards';
+
+    setTimeout(() => {
+        openOverlay(newIdx, true);
+        inner.style.animation = 'none';
+        inner.offsetHeight; // force reflow so 'both' fill applies from-keyframe immediately
+        inner.style.animation = dir > 0
+            ? 'ov-enter-right 0.35s cubic-bezier(0.2,0,0,1) both'
+            : 'ov-enter-left 0.35s cubic-bezier(0.2,0,0,1) both';
+        setTimeout(() => { inner.style.animation = ''; isNavTransitioning = false; }, 360);
+    }, 230);
 }
 
 document.getElementById('overlay-close').addEventListener('click', closeOverlay);
+document.getElementById('overlay-close-mob').addEventListener('click', closeOverlay);
+document.getElementById('ov-close-mob-outer').addEventListener('click', closeOverlay);
 overlay.addEventListener('click', e => { if (e.target === overlay) closeOverlay(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeOverlay(); });
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape')     closeOverlay();
+    if (e.key === 'ArrowRight') navigateOverlay(1);
+    if (e.key === 'ArrowLeft')  navigateOverlay(-1);
+});
+
+document.getElementById('ov-prev').addEventListener('click', () => navigateOverlay(-1));
+document.getElementById('ov-next').addEventListener('click', () => navigateOverlay(1));
+if (!isMobile) {
+    document.getElementById('ov-prev').addEventListener('mouseenter', () => setCursorState(true, 'Prev'));
+    document.getElementById('ov-prev').addEventListener('mouseleave', () => setCursorState(false));
+    document.getElementById('ov-next').addEventListener('mouseenter', () => setCursorState(true, 'Next'));
+    document.getElementById('ov-next').addEventListener('mouseleave', () => setCursorState(false));
+}
 
 /* ============================================================
    EFFECTS ENGINE  v2
@@ -1377,33 +1584,47 @@ window.addEventListener('resize', () => { resizeCanvas(); renderCanvas(); });
 
 /* ---- Font-load guard: canvas text uses Syne — don't render until loaded ---- */
 let fontsLoaded = false;
-document.fonts.ready.then(() => { fontsLoaded = true; });
+document.fonts.ready.then(() => { fontsLoaded = true; _metricsCache = null; });
 
 /* ---- Derive canvas text positions from actual DOM span rects ----
    Using getBoundingClientRect() on the real spans is the only truly
-   reliable anchor — no font-metric guesswork, no fallback mismatch.
-   textBaseline:'top' places text at the top of the em-square.
-   With line-height:0.84, the em-square overflows the line-box upward
-   by halfLeading_abs = 0.08 * fontSize, so we subtract that. ---- */
+   Measure the CSS alphabetic baseline directly by inserting a zero-size
+   probe element — no font-metric maths, no line-height assumptions. ---- */
+let _metricsCache = null;
+window.addEventListener('resize', () => { _metricsCache = null; });
+
 function getMetrics() {
+    if (_metricsCache) return _metricsCache;
     const wrapRect = titleWrap.getBoundingClientRect();
-    const r1 = document.getElementById('hero-line-1').getBoundingClientRect();
-    const r2 = document.getElementById('hero-line-2').getBoundingClientRect();
+    const lineEl1  = document.getElementById('hero-line-1');
+    const lineEl2  = document.getElementById('hero-line-2');
     const fs = parseFloat(window.getComputedStyle(heroTitleEl).fontSize);
-    const cf = fs * DPR;
-    const halfLeadingAbs = 0.08 * fs; // abs(halfLeading) for line-height:0.84
-    return {
-        cf,
+
+    const r1 = lineEl1.getBoundingClientRect();
+    const r2 = lineEl2.getBoundingClientRect();
+
+    // Probe only inserted into line-1 (shorter text — never wraps).
+    // Line-2 baseline is derived from the difference in element tops so we
+    // never accidentally push the probe onto a new line inside "GREEN".
+    const p = document.createElement('span');
+    p.style.cssText = 'display:inline-block;width:0;height:0;vertical-align:baseline;overflow:hidden;';
+    lineEl1.appendChild(p);
+    const baseline1 = (p.getBoundingClientRect().top - wrapRect.top) * DPR;
+    lineEl1.removeChild(p);
+
+    _metricsCache = {
+        cf: fs * DPR,
         x:  (r1.left - wrapRect.left) * DPR,
-        y1: ((r1.top  - wrapRect.top)  - halfLeadingAbs) * DPR,
-        y2: ((r2.top  - wrapRect.top)  - halfLeadingAbs) * DPR,
+        y1: baseline1,
+        y2: baseline1 + (r2.top - r1.top) * DPR,
     };
+    return _metricsCache;
 }
 
 /* ---- Draw both text lines onto a context ---- */
 function fillLines(c, m, dx, style) {
     c.font = `800 ${m.cf}px 'Syne', system-ui, sans-serif`;
-    c.textBaseline = 'top';
+    c.textBaseline = 'alphabetic';
     if ('letterSpacing' in c) c.letterSpacing = `${Math.round(m.cf * -0.03)}px`;
     c.fillStyle = style;
     c.fillText('TIM',   m.x + dx, m.y1);
@@ -1513,7 +1734,6 @@ function renderCanvas() {
         return;
     }
     heroTitleEl.style.opacity = '0';
-    // Fragment takes over when both are active (simpler, consistent)
     if (FX.fragment > 0) renderFragment();
     else renderRibbed();
 }
@@ -1591,11 +1811,15 @@ document.getElementById('randomise-btn').addEventListener('click', () => {
 
 document.getElementById('reset-btn').addEventListener('click', () => {
     FX.water = FX.fragment = FX.rgbShift = FX.ribbed = 0;
+    // Clear all effects directly — don't rely on fontsLoaded guard in renderCanvas
     titleWrap.style.filter = 'none';
     document.querySelectorAll('.hero-title .line').forEach(l => l.style.textShadow = '');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
     heroTitleEl.style.opacity = '1';
-    pushFX();
+    resizeCanvas();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Sync slider UI
+    slInputs.water.value = slInputs.frag.value = slInputs.rgb.value = slInputs.ribbed.value = '0';
+    slVals.water.textContent = slVals.frag.textContent = slVals.rgb.textContent = slVals.ribbed.textContent = '0';
 });
 
 /* ============================================================
@@ -1615,14 +1839,40 @@ function setupReveals() {
 }
 setupReveals();
 
+/* ============================================================
+   PAINTING SLIDESHOW
+   ============================================================ */
+(function () {
+    const slides = document.querySelectorAll('.painting-slide');
+    if (!slides.length) return;
+    let current = 0;
+    setInterval(() => {
+        slides[current].classList.remove('active');
+        current = (current + 1) % slides.length;
+        slides[current].classList.add('active');
+    }, 3000);
+})();
+
 /* Portrait: pre-rendered as portrait_divide.png — no canvas needed */
 
-if (!isMobile) {
-    const portraitWrap = document.getElementById('portrait-wrap');
-    portraitWrap.addEventListener('click', () => {
-        portraitWrap.classList.toggle('lit');
-    });
-}
+/* ============================================================
+   PORTRAIT TOGGLE (click / tap)
+   ============================================================ */
+(function () {
+    const wrap = document.getElementById('portrait-wrap');
+    if (!wrap) return;
+    let toggled = false;
+
+    function handleToggle(e) {
+        /* prevent ghost click on touch devices */
+        if (e.type === 'touchend') e.preventDefault();
+        toggled = !toggled;
+        wrap.classList.toggle('portrait-toggled', toggled);
+    }
+
+    wrap.addEventListener('click',    handleToggle);
+    wrap.addEventListener('touchend', handleToggle, { passive: false });
+}());
 </script>
 </body>
 </html>
