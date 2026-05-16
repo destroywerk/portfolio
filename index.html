@@ -1450,6 +1450,7 @@ function openOverlay(idx, isNav = false) {
     if (!isNav) document.body.style.overflow = 'hidden';
     const closeMob = document.getElementById('ov-close-mob-outer');
     if (closeMob) closeMob.style.display = '';
+}
 
 function closeOverlay() {
     if (imgCycleInterval) { clearInterval(imgCycleInterval); imgCycleInterval = null; }
