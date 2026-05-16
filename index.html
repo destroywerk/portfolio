@@ -1664,10 +1664,6 @@ document.getElementById('randomise-btn').addEventListener('click', () => {
 
 document.getElementById('reset-btn').addEventListener('click', () => {
     FX.water = FX.fragment = FX.rgbShift = FX.ribbed = 0;
-    titleWrap.style.filter = 'none';
-    document.querySelectorAll('.hero-title .line').forEach(l => l.style.textShadow = '');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    heroTitleEl.style.opacity = '1';
     pushFX();
 });
 
