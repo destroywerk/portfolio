@@ -561,6 +561,21 @@ input[type=range]:active::-webkit-slider-thumb {
 }
 .interest-card:hover .interest-thumb img,
 .interest-card:hover .interest-thumb video { transform: scale(1.04); filter: grayscale(0%) contrast(1.05); }
+
+/* Painting slideshow */
+.painting-slideshow { position: absolute; inset: 0; }
+.painting-slide {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%; object-fit: cover;
+    filter: grayscale(60%) contrast(1.1);
+    opacity: 0;
+    transition: opacity 1.2s ease, transform .7s var(--ease), filter .4s;
+}
+.painting-slide.active { opacity: 1; }
+.interest-card:hover .painting-slide.active {
+    transform: scale(1.04);
+    filter: grayscale(0%) contrast(1.05);
+}
 .interest-card::after {
     content: ''; position: absolute; inset: 0;
     background: linear-gradient(to top, rgba(0,0,0,.82) 0%, rgba(0,0,0,.3) 50%, transparent 100%);
@@ -1019,11 +1034,18 @@ input[type=range]:active::-webkit-slider-thumb {
         </div>
     </div>
     <div class="interests-grid">
-        <a href="https://www.instagram.com/timgreen.studio/" target="_blank" class="interest-card reveal">
-            <div class="interest-thumb">
-                <video autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(0.25,0.46,0.45,0.94),filter .4s;filter:grayscale(60%) contrast(1.1)">
-                    <source src="studio.webm" type="video/webm">
-                </video>
+        <a href="https://www.instagram.com/timgreen.studio/" target="_blank" class="interest-card reveal" id="studio-card">
+            <div class="interest-thumb painting-slideshow">
+                <img src="assets/paintings/01.png" alt="Painting" class="painting-slide active">
+                <img src="assets/paintings/02.png" alt="Painting" class="painting-slide">
+                <img src="assets/paintings/03.png" alt="Painting" class="painting-slide">
+                <img src="assets/paintings/04.png" alt="Painting" class="painting-slide">
+                <img src="assets/paintings/05.png" alt="Painting" class="painting-slide">
+                <img src="assets/paintings/06.png" alt="Painting" class="painting-slide">
+                <img src="assets/paintings/07.png" alt="Painting" class="painting-slide">
+                <img src="assets/paintings/08.png" alt="Painting" class="painting-slide">
+                <img src="assets/paintings/09.png" alt="Painting" class="painting-slide">
+                <img src="assets/paintings/10.png" alt="Painting" class="painting-slide">
             </div>
             <div class="interest-content">
                 <div class="interest-num">01</div>
@@ -1766,6 +1788,20 @@ function setupReveals() {
     document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 }
 setupReveals();
+
+/* ============================================================
+   PAINTING SLIDESHOW
+   ============================================================ */
+(function () {
+    const slides = document.querySelectorAll('.painting-slide');
+    if (!slides.length) return;
+    let current = 0;
+    setInterval(() => {
+        slides[current].classList.remove('active');
+        current = (current + 1) % slides.length;
+        slides[current].classList.add('active');
+    }, 3000);
+})();
 
 /* Portrait: pre-rendered as portrait_divide.png — no canvas needed */
 
