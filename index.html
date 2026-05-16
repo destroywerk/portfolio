@@ -1143,8 +1143,8 @@ const PROJECTS = [
         year: "2025 — Present",
         bg: "bg-dark-2", initial: "PR",
         thumb: "assets/swissdgets.gif",
-        imgs: ["assets/swissdgets.gif"],
-        desc: "Area Lead for Growth, leading 7 squads to create a more cohesive, goal-focused experience for students.",
+        imgs: ["assets/swissdgets.gif", "assets/preply2.gif"],
+        desc: "Area Lead for Growth, leading 7 squads and their designers to deliver the most cohesive and student focused experience possible. Working personally to define a more cohesive, goal-focused experience, vision work for the E2E funnel, connection between initial and ongoing learning experiences, and uplifting the over design quality and exploration.",
     },
     {
         name: "Warp Soup",
@@ -1450,9 +1450,9 @@ function openOverlay(idx, isNav = false) {
             setTimeout(() => {
                 cycleImg.src = p.imgs[cycleIdx];
                 cycleImg.style.transition = '';
-                cycleImg.style.opacity = '';
+                cycleImg.style.opacity = '1';
             }, 460);
-        }, 6000);
+        }, 5000);
     } else if (p.img) {
         ovAsset.innerHTML = `<img src="${p.img}" alt="${p.name}">`;
     } else {
