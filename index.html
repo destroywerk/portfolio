@@ -132,7 +132,7 @@ nav {
     font-size: 0.88rem; letter-spacing: 0.08em; text-transform: uppercase;
     color: #fff;
 }
-.nav-links { display: flex; gap: 2.5rem; list-style: none; }
+.nav-links { display: flex; gap: 2.5rem; list-style: none; position: absolute; left: 50%; transform: translateX(-50%); }
 .nav-links a {
     font-family: var(--font-mono); font-size: 0.62rem;
     letter-spacing: 0.12em; text-transform: uppercase; color: #fff;
@@ -1583,20 +1583,26 @@ document.fonts.ready.then(() => { fontsLoaded = true; });
 /* ---- Derive canvas text positions from actual DOM span rects ----
    Using getBoundingClientRect() on the real spans is the only truly
    reliable anchor — no font-metric guesswork, no fallback mismatch.
-   textBaseline:'top' places text at the top of the em-square.
-   With line-height:0.84, the em-square overflows the line-box upward
-   by halfLeading_abs = 0.08 * fontSize, so we subtract that. ---- */
+   textBaseline:'top' — we use actualBoundingBoxAscent to align the
+   rendered glyph top exactly with the DOM line-box top. ---- */
 function getMetrics() {
     const wrapRect = titleWrap.getBoundingClientRect();
     const r1 = document.getElementById('hero-line-1').getBoundingClientRect();
     const r2 = document.getElementById('hero-line-2').getBoundingClientRect();
     const fs = parseFloat(window.getComputedStyle(heroTitleEl).fontSize);
     const cf = fs * DPR;
+    offCtx.font = `800 ${cf}px 'Syne', system-ui, sans-serif`;
+    offCtx.textBaseline = 'top';
+    const m = offCtx.measureText('TIM');
+    // actualBoundingBoxAscent is negative when glyphs sit below the 'top' baseline.
+    // Adding it shifts the drawing point up so the glyph bounding-box top
+    // lands exactly at the DOM line-box top — no halfLeading guesswork needed.
+    const asc = (isFinite(m.actualBoundingBoxAscent) ? m.actualBoundingBoxAscent : 0);
     return {
         cf,
         x:  (r1.left - wrapRect.left) * DPR,
-        y1: (r1.top  - wrapRect.top) * DPR,
-        y2: (r2.top  - wrapRect.top) * DPR,
+        y1: (r1.top  - wrapRect.top)  * DPR + asc,
+        y2: (r2.top  - wrapRect.top)  * DPR + asc,
     };
 }
 
