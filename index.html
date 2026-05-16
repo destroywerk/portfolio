@@ -1594,22 +1594,23 @@ function getMetrics() {
     const lineEl2  = document.getElementById('hero-line-2');
     const fs = parseFloat(window.getComputedStyle(heroTitleEl).fontSize);
 
-    // A zero-size inline-block with vertical-align:baseline sits exactly
-    // at the parent line's alphabetic baseline — measured via getBoundingClientRect.
-    function baselineY(lineEl) {
-        const p = document.createElement('span');
-        p.style.cssText = 'display:inline-block;width:0;height:0;vertical-align:baseline;overflow:hidden;';
-        lineEl.appendChild(p);
-        const y = (p.getBoundingClientRect().top - wrapRect.top) * DPR;
-        lineEl.removeChild(p);
-        return y;
-    }
+    const r1 = lineEl1.getBoundingClientRect();
+    const r2 = lineEl2.getBoundingClientRect();
+
+    // Probe only inserted into line-1 (shorter text — never wraps).
+    // Line-2 baseline is derived from the difference in element tops so we
+    // never accidentally push the probe onto a new line inside "GREEN".
+    const p = document.createElement('span');
+    p.style.cssText = 'display:inline-block;width:0;height:0;vertical-align:baseline;overflow:hidden;';
+    lineEl1.appendChild(p);
+    const baseline1 = (p.getBoundingClientRect().top - wrapRect.top) * DPR;
+    lineEl1.removeChild(p);
 
     _metricsCache = {
         cf: fs * DPR,
-        x:  (lineEl1.getBoundingClientRect().left - wrapRect.left) * DPR,
-        y1: baselineY(lineEl1),
-        y2: baselineY(lineEl2),
+        x:  (r1.left - wrapRect.left) * DPR,
+        y1: baseline1,
+        y2: baseline1 + (r2.top - r1.top) * DPR,
     };
     return _metricsCache;
 }
