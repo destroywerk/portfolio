@@ -751,7 +751,7 @@ input[type=range]:active::-webkit-slider-thumb {
 
 /* ===== MOBILE ===== */
 @media (max-width: 768px) {
-    nav { padding: 1.25rem; }
+    nav { padding: 1.25rem; align-items: flex-start; }
     .nav-clock { display: none; }
     .nav-logo-clock {
         display: block;
@@ -1589,12 +1589,11 @@ function getMetrics() {
     const r2 = document.getElementById('hero-line-2').getBoundingClientRect();
     const fs = parseFloat(window.getComputedStyle(heroTitleEl).fontSize);
     const cf = fs * DPR;
-    const halfLeadingAbs = 0.08 * fs; // abs(halfLeading) for line-height:0.84
     return {
         cf,
         x:  (r1.left - wrapRect.left) * DPR,
-        y1: ((r1.top  - wrapRect.top)  - halfLeadingAbs) * DPR,
-        y2: ((r2.top  - wrapRect.top)  - halfLeadingAbs) * DPR,
+        y1: (r1.top  - wrapRect.top) * DPR,
+        y2: (r2.top  - wrapRect.top) * DPR,
     };
 }
 
@@ -1706,11 +1705,11 @@ function renderCanvas() {
     if (!fontsLoaded || !resizeCanvas()) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     const useCanvas = FX.ribbed > 0 || FX.fragment > 0;
-    if (!useCanvas) return; // canvas transparent — DOM title shows through
-    // Fill hero background to cover DOM title beneath the canvas (z-index:3),
-    // avoiding any subpixel position mismatch between DOM and canvas text.
-    ctx.fillStyle = '#0a0a08';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    if (!useCanvas) {
+        heroTitleEl.style.opacity = '1';
+        return;
+    }
+    heroTitleEl.style.opacity = '0';
     if (FX.fragment > 0) renderFragment();
     else renderRibbed();
 }
@@ -1720,6 +1719,9 @@ function updateFX() {
     applyWater();
     applyRGBShift();
     renderCanvas();
+    if (FX.ribbed === 0 && FX.fragment === 0) {
+        heroTitleEl.style.opacity = '1';
+    }
 }
 
 function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
@@ -1788,6 +1790,7 @@ document.getElementById('reset-btn').addEventListener('click', () => {
     // Clear all effects directly — don't rely on fontsLoaded guard in renderCanvas
     titleWrap.style.filter = 'none';
     document.querySelectorAll('.hero-title .line').forEach(l => l.style.textShadow = '');
+    heroTitleEl.style.opacity = '1';
     resizeCanvas();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     // Sync slider UI
