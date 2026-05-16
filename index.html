@@ -753,7 +753,7 @@ input[type=range]:active::-webkit-slider-thumb {
 /* ===== MOBILE ===== */
 @media (max-width: 768px) {
     nav { padding: 1.25rem; }
-    .nav-clock { display: none; }
+    .nav-clock { font-size: 0.44rem; }
     .hero { min-height: 100svh; }
     .hero-actions { top: 4rem; right: 1.25rem; }
 
@@ -1279,7 +1279,9 @@ setInterval(() => {
 function tick() {
     const n = new Date();
     const p = v => String(v).padStart(2, '0');
-    document.getElementById('clock').textContent = `${p(n.getHours())}:${p(n.getMinutes())}:${p(n.getSeconds())} GMT`;
+    const tz = n.toLocaleTimeString('en-GB', { timeZoneName: 'short' }).split(' ').pop();
+    document.getElementById('clock').textContent =
+        `LOCAL TIME \u2022 ${p(n.getHours())}:${p(n.getMinutes())}:${p(n.getSeconds())} ${tz}`;
 }
 tick(); setInterval(tick, 1000);
 
