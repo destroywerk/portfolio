@@ -452,11 +452,21 @@ input[type=range]:active::-webkit-slider-thumb {
     user-select: none; color: rgba(255,255,255,0.05);
 }
 .project-card:hover .project-thumb img { transform: scale(1.04); }
+.project-card::before {
+    content: '';
+    position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(to top, rgba(248,247,244,0.96) 0%, rgba(248,247,244,0.55) 50%, transparent 100%);
+    opacity: 1;
+    transition: opacity .35s var(--ease);
+}
+.project-card:hover::before { opacity: 0; }
+
 .project-card::after {
     content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,.75) 0%, rgba(0,0,0,.15) 55%, transparent 100%);
-    opacity: 1;
+    position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(to top, rgba(0,0,0,.8) 0%, rgba(0,0,0,.15) 55%, transparent 100%);
+    opacity: 0;
+    transition: opacity .35s var(--ease);
 }
 .project-card:hover::after { opacity: 1; }
 
@@ -469,17 +479,18 @@ input[type=range]:active::-webkit-slider-thumb {
 .project-cat {
     font-family: var(--font-mono); font-size: 0.56rem;
     letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--muted); margin-bottom: 0.35rem; transition: color .3s;
+    color: rgba(0,0,0,0.45); margin-bottom: 0.35rem; transition: color .3s;
 }
 .project-card:hover .project-cat { color: rgba(255,255,255,0.5); }
 .project-name {
     font-size: clamp(1.4rem, 3vw, 2.5rem); font-weight: 700;
     letter-spacing: -0.02em; line-height: 1.05; transition: color .3s;
+    color: #0f0f0f;
 }
 .project-card:hover .project-name { color: #fff; }
 .project-year {
     font-family: var(--font-mono); font-size: 0.56rem;
-    letter-spacing: 0.08em; color: var(--muted); margin-top: 0.45rem; transition: color .3s;
+    letter-spacing: 0.08em; color: rgba(0,0,0,0.4); margin-top: 0.45rem; transition: color .3s;
 }
 .project-card:hover .project-year { color: rgba(255,255,255,0.4); }
 
