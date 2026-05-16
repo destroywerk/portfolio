@@ -258,6 +258,8 @@ input[type=range]::-webkit-slider-thumb {
     border-radius: 50%;
     cursor: none;
     transition: transform .15s;
+    /* Centre 48px thumb on the 2px track: -(48/2 - 2/2) = -23px */
+    margin-top: -23px;
 }
 input[type=range]::-moz-range-thumb {
     width: 48px; height: 48px;
@@ -267,6 +269,10 @@ input[type=range]::-moz-range-thumb {
     cursor: none;
 }
 input[type=range]::-webkit-slider-runnable-track {
+    background: rgba(255,255,255,0.12);
+    height: 2px;
+}
+input[type=range]::-moz-range-track {
     background: rgba(255,255,255,0.12);
     height: 2px;
 }
@@ -290,6 +296,7 @@ input[type=range]:active::-webkit-slider-thumb {
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: rgba(255,255,255,0.3);
+    white-space: nowrap;
 }
 .hero-descriptor {
     font-size: clamp(0.95rem, 2vw, 1.5rem);
@@ -364,7 +371,7 @@ input[type=range]:active::-webkit-slider-thumb {
 
 .hero-actions {
     position: absolute;
-    top: 0; right: 0;
+    top: 5rem; right: 2.5rem;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -449,7 +456,7 @@ input[type=range]:active::-webkit-slider-thumb {
     content: '';
     position: absolute; inset: 0;
     background: linear-gradient(to top, rgba(0,0,0,.75) 0%, rgba(0,0,0,.15) 55%, transparent 100%);
-    opacity: 0; transition: opacity .4s var(--ease);
+    opacity: 1;
 }
 .project-card:hover::after { opacity: 1; }
 
@@ -507,7 +514,7 @@ input[type=range]:active::-webkit-slider-thumb {
 }
 .statement-aside { }
 .statement-bio {
-    max-width: 45ch; font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,0.55);
+    max-width: 680px; font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,0.55);
     font-family: var(--font-body);
 }
 .statement-bio strong { color: rgba(255,255,255,0.85); font-weight: 600; }
@@ -773,7 +780,13 @@ input[type=range]:active::-webkit-slider-thumb {
         top: auto; right: auto; bottom: auto;
         margin-bottom: 2.5rem;
     }
-    .portrait-wrap::after { display: none; }
+    .portrait-wrap::after {
+        display: block;
+        background:
+            linear-gradient(to right, #0c0b09 0%, rgba(12,11,9,0) 25%),
+            linear-gradient(to left,  #0c0b09 0%, rgba(12,11,9,0) 25%),
+            linear-gradient(to bottom, #0c0b09 0%, rgba(12,11,9,0) 20%);
+    }
     .portrait-canvas { height: auto; object-fit: contain; object-position: center top; }
     .footer-bottom { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
     .footer-links a[href*="warpsoup"] { display: none; }
@@ -785,22 +798,30 @@ input[type=range]:active::-webkit-slider-thumb {
     .overlay-asset { flex: none; height: 45vh; border-right: none; border-bottom: 1px solid rgba(255,255,255,.07); }
     .overlay-nav { display: none; }
     .overlay-close { display: none; }
-    .overlay-close-mob { display: block; }
+    #ov-close-mob { display: block; }
 }
 
 /* mobile close button (hidden on desktop) */
-.overlay-close-mob {
+#ov-close-mob {
     display: none;
-    position: absolute; bottom: 1.75rem; left: 50%;
+    position: fixed;
+    bottom: 1.5rem;
+    left: 50%;
     transform: translateX(-50%);
-    background: rgba(10,10,8,0.85); border: 1px solid rgba(255,255,255,.3);
-    color: rgba(255,255,255,.8); font-family: var(--font-mono);
-    font-size: 0.58rem; letter-spacing: 0.22em; text-transform: uppercase;
-    padding: 0.75rem 2.5rem; cursor: pointer; z-index: 600;
-    transition: border-color .2s, color .2s;
+    background: rgba(10,10,8,0.9);
+    border: 1px solid rgba(255,255,255,.35);
+    color: rgba(255,255,255,.85);
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    padding: 0.8rem 2.5rem;
+    cursor: pointer;
+    z-index: 9000;
     white-space: nowrap;
+    transition: border-color .2s, color .2s;
 }
-.overlay-close-mob:active { color: #fff; border-color: rgba(255,255,255,.7); }
+#ov-close-mob:active { color: #fff; border-color: rgba(255,255,255,.7); }
 
 /* ov-inner */
 .ov-inner {
@@ -934,13 +955,14 @@ input[type=range]:active::-webkit-slider-thumb {
             <div class="hero-right"></div>
         </div>
 
-        <!-- Top-right actions (scroll away with hero) -->
-        <div class="hero-actions">
-            <button class="hero-btn" id="randomise-btn">Randomise</button>
-            <button class="hero-btn reset" id="reset-btn">Reset</button>
-        </div>
-
     </div>
+
+    <!-- Top-right actions (scroll away with hero) -->
+    <div class="hero-actions">
+        <button class="hero-btn" id="randomise-btn">Randomise</button>
+        <button class="hero-btn reset" id="reset-btn">Reset</button>
+    </div>
+
 </section>
 
 <!-- Marquee -->
@@ -1053,7 +1075,8 @@ input[type=range]:active::-webkit-slider-thumb {
             <a class="ov-link" id="ov-link" href="#" target="_blank" style="display:none">View project ↗</a>
         </div>
     </div>
-    <button class="overlay-close-mob" id="overlay-close-mob">Close</button>
+    <button class="overlay-close-mob" id="overlay-close-mob" style="display:none">Close</button>
+    <button id="ov-close-mob">CLOSE</button>
 </div>
 
 <script>
@@ -1414,6 +1437,7 @@ function navigateOverlay(dir) {
 
 document.getElementById('overlay-close').addEventListener('click', closeOverlay);
 document.getElementById('overlay-close-mob').addEventListener('click', closeOverlay);
+document.getElementById('ov-close-mob').addEventListener('click', closeOverlay);
 overlay.addEventListener('click', e => { if (e.target === overlay) closeOverlay(); });
 document.addEventListener('keydown', e => {
     if (e.key === 'Escape')     closeOverlay();
