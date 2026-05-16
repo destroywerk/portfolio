@@ -64,7 +64,7 @@
     --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overscroll-behavior: none; }
 
 body {
     font-family: var(--font-head);
@@ -707,6 +707,7 @@ input[type=range]:active::-webkit-slider-thumb {
 @media (max-width: 768px) {
     nav { padding: 1.25rem; }
     .nav-clock { display: none; }
+    .hero { min-height: 100svh; }
 
     /* Hero — scale title purely off viewport width so it never overflows */
     .hero { padding: 1.25rem; }
@@ -752,25 +753,38 @@ input[type=range]:active::-webkit-slider-thumb {
     .portrait-wrap {
         position: relative;
         width: 100%;
-        height: 60vw;
-        max-height: 380px;
+        height: auto;
+        overflow: visible;
         top: auto; right: auto; bottom: auto;
         margin-bottom: 2.5rem;
     }
-    .portrait-wrap::after {
-        background:
-            linear-gradient(to bottom, #0c0b09 0%, rgba(12,11,9,0) 30%),
-            linear-gradient(to top,    #0c0b09 0%, rgba(12,11,9,0) 25%);
-    }
+    .portrait-wrap::after { display: none; }
+    .portrait-canvas { height: auto; object-fit: contain; object-position: center top; }
     .footer-bottom { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
+    .footer-links a[href*="warpsoup"] { display: none; }
 
     /* Overlay */
     .overlay { flex-direction: column; }
     .ov-inner { flex-direction: column; }
-    .overlay-info { width: 100%; padding: 2rem 1.5rem; }
+    .overlay-info { width: 100%; padding: 2rem 1.5rem 5rem; }
     .overlay-asset { flex: none; height: 45vh; border-right: none; border-bottom: 1px solid rgba(255,255,255,.07); }
     .overlay-nav { display: none; }
+    .overlay-close { display: none; }
+    .overlay-close-mob { display: block; }
 }
+
+/* mobile close button (hidden on desktop) */
+.overlay-close-mob {
+    display: none;
+    position: absolute; bottom: 1.75rem; left: 50%;
+    transform: translateX(-50%);
+    background: none; border: 1px solid rgba(255,255,255,.3);
+    color: rgba(255,255,255,.7); font-family: var(--font-mono);
+    font-size: 0.58rem; letter-spacing: 0.22em; text-transform: uppercase;
+    padding: 0.65rem 2rem; cursor: pointer; z-index: 40;
+    transition: border-color .2s, color .2s;
+}
+.overlay-close-mob:active { color: #fff; border-color: rgba(255,255,255,.7); }
 
 /* ov-inner */
 .ov-inner {
@@ -1002,6 +1016,7 @@ input[type=range]:active::-webkit-slider-thumb {
 <!-- Project Overlay -->
 <div class="overlay" id="overlay" role="dialog" aria-modal="true">
     <button class="overlay-close" id="overlay-close" aria-label="Close">×</button>
+    <button class="overlay-close-mob" id="overlay-close-mob">Close</button>
     <button class="overlay-nav overlay-nav--prev" id="ov-prev" aria-label="Previous project">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M15 19l-7-7 7-7"/></svg>
     </button>
@@ -1377,6 +1392,7 @@ function navigateOverlay(dir) {
 }
 
 document.getElementById('overlay-close').addEventListener('click', closeOverlay);
+document.getElementById('overlay-close-mob').addEventListener('click', closeOverlay);
 overlay.addEventListener('click', e => { if (e.target === overlay) closeOverlay(); });
 document.addEventListener('keydown', e => {
     if (e.key === 'Escape')     closeOverlay();
@@ -1666,7 +1682,15 @@ document.getElementById('randomise-btn').addEventListener('click', () => {
 
 document.getElementById('reset-btn').addEventListener('click', () => {
     FX.water = FX.fragment = FX.rgbShift = FX.ribbed = 0;
-    pushFX();
+    // Clear all effects directly — don't rely on fontsLoaded guard in renderCanvas
+    titleWrap.style.filter = 'none';
+    document.querySelectorAll('.hero-title .line').forEach(l => l.style.textShadow = '');
+    heroTitleEl.style.opacity = '1';
+    resizeCanvas();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Sync slider UI
+    slInputs.water.value = slInputs.frag.value = slInputs.rgb.value = slInputs.ribbed.value = '0';
+    slVals.water.textContent = slVals.frag.textContent = slVals.rgb.textContent = slVals.ribbed.textContent = '0';
 });
 
 /* ============================================================
