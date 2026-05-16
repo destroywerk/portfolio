@@ -1105,7 +1105,7 @@ input[type=range]:active::-webkit-slider-thumb {
         <img src="portrait-light.png" class="portrait-light" alt="Tim Green — Light">
     </div>
     <div class="footer-cta">
-        <div class="footer-headline reveal">Let's<br>talk.</div>
+        <div class="footer-headline reveal" id="footer-headline">Let's<br>talk.</div>
         <a href="mailto:hello@timgreen.design" class="footer-email reveal">hello@timgreen.design ↗</a>
     </div>
     <div class="footer-bottom">
@@ -1894,9 +1894,18 @@ setupReveals();
     // Desktop click: fade to portrait-light (toggle)
     if (!isMobile) {
         let lit = false;
+        const footerHeadline = document.getElementById('footer-headline');
         wrap.addEventListener('click', () => {
             lit = !lit;
             wrap.classList.toggle('lit', lit);
+            if (footerHeadline) {
+                footerHeadline.style.transition = 'opacity 0.6s ease';
+                footerHeadline.style.opacity = '0';
+                setTimeout(() => {
+                    footerHeadline.innerHTML = lit ? "Let's<br>dance." : "Let's<br>talk.";
+                    footerHeadline.style.opacity = '1';
+                }, 620);
+            }
         });
     }
 
