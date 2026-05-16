@@ -644,6 +644,19 @@ input[type=range]:active::-webkit-slider-thumb {
 }
 .portrait-wrap:hover .portrait-original,
 .portrait-wrap.portrait-toggled .portrait-original { opacity: 1; }
+.portrait-light {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+    pointer-events: none;
+}
+.portrait-wrap.lit .portrait-light   { opacity: 1; }
+.portrait-wrap.lit .portrait-original { opacity: 0 !important; }
 /* Gradient blends portrait into #0c0b09 background on all edges */
 .portrait-wrap::after {
     content: '';
@@ -1089,6 +1102,7 @@ input[type=range]:active::-webkit-slider-thumb {
     <div class="portrait-wrap" id="portrait-wrap">
         <img src="portrait-divide.png" class="portrait-canvas" alt="Tim Green — Divide by Tone">
         <img src="portrait-og.png" class="portrait-original" alt="Tim Green">
+        <img src="portrait-light.png" class="portrait-light" alt="Tim Green — Light">
     </div>
     <div class="footer-cta">
         <div class="footer-headline reveal">Let's<br>talk.</div>
@@ -1870,7 +1884,15 @@ setupReveals();
         wrap.classList.toggle('portrait-toggled', toggled);
     }
 
-    wrap.addEventListener('click',    handleToggle);
+    // Desktop click: fade to portrait-light (toggle)
+    if (!isMobile) {
+        let lit = false;
+        wrap.addEventListener('click', () => {
+            lit = !lit;
+            wrap.classList.toggle('lit', lit);
+        });
+    }
+
     wrap.addEventListener('touchend', handleToggle, { passive: false });
 }());
 </script>
