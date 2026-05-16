@@ -1332,6 +1332,11 @@ if (!isMobile) {
         el.addEventListener('mouseenter', () => setCursorState(true, 'View'));
         el.addEventListener('mouseleave', () => setCursorState(false));
     });
+
+    // Close button gets its own label
+    const closeBtn = document.getElementById('overlay-close');
+    closeBtn.addEventListener('mouseenter', () => setCursorState(true, 'Close'));
+    closeBtn.addEventListener('mouseleave', () => setCursorState(false));
 }
 
 /* ============================================================
