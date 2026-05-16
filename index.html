@@ -362,6 +362,16 @@ input[type=range]:active::-webkit-slider-thumb {
 .hero-btn.reset { color: rgba(255,255,255,0.25); border-color: rgba(255,255,255,0.1); }
 .hero-btn.reset:hover { color: rgba(255,255,255,0.6); border-color: rgba(255,255,255,0.4); }
 
+.hero-actions {
+    position: absolute;
+    top: 0; right: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-end;
+    z-index: 2;
+}
+
 /* ===== MARQUEE ===== */
 .marquee-wrap {
     border-top: 1px solid var(--border);
@@ -781,13 +791,14 @@ input[type=range]:active::-webkit-slider-thumb {
 /* mobile close button (hidden on desktop) */
 .overlay-close-mob {
     display: none;
-    margin-top: 2rem;
-    background: none; border: 1px solid rgba(255,255,255,.3);
-    color: rgba(255,255,255,.7); font-family: var(--font-mono);
+    position: absolute; bottom: 1.75rem; left: 50%;
+    transform: translateX(-50%);
+    background: rgba(10,10,8,0.85); border: 1px solid rgba(255,255,255,.3);
+    color: rgba(255,255,255,.8); font-family: var(--font-mono);
     font-size: 0.58rem; letter-spacing: 0.22em; text-transform: uppercase;
-    padding: 0.65rem 2rem; cursor: pointer;
+    padding: 0.75rem 2.5rem; cursor: pointer; z-index: 600;
     transition: border-color .2s, color .2s;
-    align-self: center;
+    white-space: nowrap;
 }
 .overlay-close-mob:active { color: #fff; border-color: rgba(255,255,255,.7); }
 
@@ -795,6 +806,7 @@ input[type=range]:active::-webkit-slider-thumb {
 .ov-inner {
     display: flex; flex: 1; min-width: 0;
     will-change: transform, opacity;
+    z-index: 1;
 }
 
 /* overlay nav zones */
@@ -919,10 +931,13 @@ input[type=range]:active::-webkit-slider-thumb {
             <div class="hero-mid">
                 <div class="hero-scroll">Scroll</div>
             </div>
-            <div class="hero-right">
-                <button class="hero-btn" id="randomise-btn">Randomise</button>
-                <button class="hero-btn reset" id="reset-btn">Reset</button>
-            </div>
+            <div class="hero-right"></div>
+        </div>
+
+        <!-- Top-right actions (scroll away with hero) -->
+        <div class="hero-actions">
+            <button class="hero-btn" id="randomise-btn">Randomise</button>
+            <button class="hero-btn reset" id="reset-btn">Reset</button>
         </div>
 
     </div>
@@ -1036,9 +1051,9 @@ input[type=range]:active::-webkit-slider-thumb {
             <div class="ov-year" id="ov-year"></div>
             <div class="ov-desc" id="ov-desc"></div>
             <a class="ov-link" id="ov-link" href="#" target="_blank" style="display:none">View project ↗</a>
-            <button class="overlay-close-mob" id="overlay-close-mob">Close</button>
         </div>
     </div>
+    <button class="overlay-close-mob" id="overlay-close-mob">Close</button>
 </div>
 
 <script>
