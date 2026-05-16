@@ -760,9 +760,44 @@ input[type=range]:active::-webkit-slider-thumb {
 
     /* Overlay */
     .overlay { flex-direction: column; }
+    .ov-inner { flex-direction: column; }
     .overlay-info { width: 100%; padding: 2rem 1.5rem; }
     .overlay-asset { flex: none; height: 45vh; border-right: none; border-bottom: 1px solid rgba(255,255,255,.07); }
+    .overlay-nav { display: none; }
 }
+
+/* ov-inner */
+.ov-inner {
+    display: flex; flex: 1; min-width: 0;
+    will-change: transform, opacity;
+}
+
+/* overlay nav zones */
+.overlay-nav {
+    position: absolute; top: 0; bottom: 0; width: 100px;
+    background: none; border: none; cursor: none; z-index: 30;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity .4s var(--ease);
+    pointer-events: all;
+}
+.overlay-nav--prev { left: 0; }
+.overlay-nav--next { right: 0; }
+.overlay.open .overlay-nav:hover { opacity: 1; }
+.overlay-nav svg {
+    width: 22px; height: 22px;
+    color: rgba(255,255,255,.45);
+    pointer-events: none;
+    transition: color .2s, transform .3s var(--ease);
+}
+.overlay-nav:hover svg { color: rgba(255,255,255,.9); }
+.overlay-nav--prev:hover svg { transform: translateX(-3px); }
+.overlay-nav--next:hover svg { transform: translateX(3px); }
+
+/* nav transition keyframes */
+@keyframes ov-exit-left  { from { transform: translateX(0)     scale(1);    opacity: 1; } to { transform: translateX(-4%) scale(0.97); opacity: 0; } }
+@keyframes ov-exit-right { from { transform: translateX(0)     scale(1);    opacity: 1; } to { transform: translateX( 4%) scale(0.97); opacity: 0; } }
+@keyframes ov-enter-right{ from { transform: translateX( 4%)   scale(0.97); opacity: 0; } to { transform: translateX(0)   scale(1);    opacity: 1; } }
+@keyframes ov-enter-left { from { transform: translateX(-4%)   scale(0.97); opacity: 0; } to { transform: translateX(0)   scale(1);    opacity: 1; } }
 
 /* Extra-small — phones under 400px */
 @media (max-width: 400px) {
@@ -959,13 +994,21 @@ input[type=range]:active::-webkit-slider-thumb {
 <!-- Project Overlay -->
 <div class="overlay" id="overlay" role="dialog" aria-modal="true">
     <button class="overlay-close" id="overlay-close" aria-label="Close">×</button>
-    <div class="overlay-asset" id="ov-asset"></div>
-    <div class="overlay-info">
-        <div class="ov-cat" id="ov-cat"></div>
-        <div class="ov-title" id="ov-title"></div>
-        <div class="ov-year" id="ov-year"></div>
-        <div class="ov-desc" id="ov-desc"></div>
-        <a class="ov-link" id="ov-link" href="#" target="_blank" style="display:none">View project ↗</a>
+    <button class="overlay-nav overlay-nav--prev" id="ov-prev" aria-label="Previous project">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M15 19l-7-7 7-7"/></svg>
+    </button>
+    <button class="overlay-nav overlay-nav--next" id="ov-next" aria-label="Next project">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M9 5l7 7-7 7"/></svg>
+    </button>
+    <div id="ov-inner" class="ov-inner">
+        <div class="overlay-asset" id="ov-asset"></div>
+        <div class="overlay-info">
+            <div class="ov-cat" id="ov-cat"></div>
+            <div class="ov-title" id="ov-title"></div>
+            <div class="ov-year" id="ov-year"></div>
+            <div class="ov-desc" id="ov-desc"></div>
+            <a class="ov-link" id="ov-link" href="#" target="_blank" style="display:none">View project ↗</a>
+        </div>
     </div>
 </div>
 
@@ -1053,6 +1096,7 @@ const PROJECTS = [
         cat: "Various · Freelance",
         year: "2010 — Present",
         bg: "bg-dark-1", initial: "RD",
+        img: "assets/random.gif",
         desc: "A collection of freelance, experimental and graphic design work spanning over a decade. Brand identity, editorial, type design, motion and print.",
     },
 ];
@@ -1251,8 +1295,11 @@ document.querySelectorAll('.project-card').forEach(card => {
 const overlay = document.getElementById('overlay');
 const ovAsset = document.getElementById('ov-asset');
 let imgCycleInterval = null;
+let currentProjectIdx = 0;
+let isNavTransitioning = false;
 
-function openOverlay(idx) {
+function openOverlay(idx, isNav = false) {
+    currentProjectIdx = idx;
     const p = PROJECTS[idx];
     document.getElementById('ov-cat').textContent = p.cat;
     document.getElementById('ov-title').textContent = p.name;
@@ -1291,7 +1338,7 @@ function openOverlay(idx) {
     }
 
     overlay.classList.add('open');
-    document.body.style.overflow = 'hidden';
+    if (!isNav) document.body.style.overflow = 'hidden';
 }
 
 function closeOverlay() {
@@ -1300,9 +1347,43 @@ function closeOverlay() {
     document.body.style.overflow = '';
 }
 
+function navigateOverlay(dir) {
+    if (!overlay.classList.contains('open') || isNavTransitioning) return;
+    const newIdx = (currentProjectIdx + dir + PROJECTS.length) % PROJECTS.length;
+    const inner = document.getElementById('ov-inner');
+    isNavTransitioning = true;
+
+    inner.style.animation = dir > 0
+        ? 'ov-exit-left 0.22s cubic-bezier(0.4,0,0.6,1) forwards'
+        : 'ov-exit-right 0.22s cubic-bezier(0.4,0,0.6,1) forwards';
+
+    setTimeout(() => {
+        openOverlay(newIdx, true);
+        inner.style.animation = 'none';
+        inner.offsetHeight; // force reflow so 'both' fill applies from-keyframe immediately
+        inner.style.animation = dir > 0
+            ? 'ov-enter-right 0.35s cubic-bezier(0.2,0,0,1) both'
+            : 'ov-enter-left 0.35s cubic-bezier(0.2,0,0,1) both';
+        setTimeout(() => { inner.style.animation = ''; isNavTransitioning = false; }, 360);
+    }, 230);
+}
+
 document.getElementById('overlay-close').addEventListener('click', closeOverlay);
 overlay.addEventListener('click', e => { if (e.target === overlay) closeOverlay(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeOverlay(); });
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape')     closeOverlay();
+    if (e.key === 'ArrowRight') navigateOverlay(1);
+    if (e.key === 'ArrowLeft')  navigateOverlay(-1);
+});
+
+document.getElementById('ov-prev').addEventListener('click', () => navigateOverlay(-1));
+document.getElementById('ov-next').addEventListener('click', () => navigateOverlay(1));
+if (!isMobile) {
+    document.getElementById('ov-prev').addEventListener('mouseenter', () => setCursorState(true, 'Prev'));
+    document.getElementById('ov-prev').addEventListener('mouseleave', () => setCursorState(false));
+    document.getElementById('ov-next').addEventListener('mouseenter', () => setCursorState(true, 'Next'));
+    document.getElementById('ov-next').addEventListener('mouseleave', () => setCursorState(false));
+}
 
 /* ============================================================
    EFFECTS ENGINE  v2
