@@ -610,7 +610,7 @@ input[type=range]:active::-webkit-slider-thumb {
 .footer-bottom {
     display: flex; align-items: flex-end; justify-content: space-between;
     padding-top: 2rem; border-top: 1px solid rgba(255,255,255,.07);
-    position: relative; z-index: 1;
+    position: absolute; bottom: 3rem; left: 2.5rem; right: 2.5rem; z-index: 1;
 }
 .footer-links { display: flex; gap: 2rem; flex-wrap: wrap; }
 .footer-links a { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,.32); transition: color .2s; }
@@ -840,7 +840,7 @@ input[type=range]:active::-webkit-slider-thumb {
             linear-gradient(to bottom, #0c0b09 0%, rgba(12,11,9,0) 20%);
     }
     .portrait-canvas { height: auto; object-fit: contain; object-position: center top; }
-    .footer-bottom { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
+    .footer-bottom { flex-direction: column; gap: 1.5rem; align-items: flex-start; left: 1.25rem; right: 1.25rem; bottom: 2rem; }
     .footer-links a[href*="warpsoup"] { display: none; }
 
     /* Overlay */
