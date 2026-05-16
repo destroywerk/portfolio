@@ -766,7 +766,7 @@ input[type=range]:active::-webkit-slider-thumb {
     /* Overlay */
     .overlay { flex-direction: column; }
     .ov-inner { flex-direction: column; }
-    .overlay-info { width: 100%; padding: 2rem 1.5rem 5rem; }
+    .overlay-info { width: 100%; padding: 2rem 1.5rem 3rem; }
     .overlay-asset { flex: none; height: 45vh; border-right: none; border-bottom: 1px solid rgba(255,255,255,.07); }
     .overlay-nav { display: none; }
     .overlay-close { display: none; }
@@ -776,13 +776,13 @@ input[type=range]:active::-webkit-slider-thumb {
 /* mobile close button (hidden on desktop) */
 .overlay-close-mob {
     display: none;
-    position: absolute; bottom: 1.75rem; left: 50%;
-    transform: translateX(-50%);
+    margin-top: 2rem;
     background: none; border: 1px solid rgba(255,255,255,.3);
     color: rgba(255,255,255,.7); font-family: var(--font-mono);
     font-size: 0.58rem; letter-spacing: 0.22em; text-transform: uppercase;
-    padding: 0.65rem 2rem; cursor: pointer; z-index: 40;
+    padding: 0.65rem 2rem; cursor: pointer;
     transition: border-color .2s, color .2s;
+    align-self: center;
 }
 .overlay-close-mob:active { color: #fff; border-color: rgba(255,255,255,.7); }
 
@@ -1016,7 +1016,6 @@ input[type=range]:active::-webkit-slider-thumb {
 <!-- Project Overlay -->
 <div class="overlay" id="overlay" role="dialog" aria-modal="true">
     <button class="overlay-close" id="overlay-close" aria-label="Close">×</button>
-    <button class="overlay-close-mob" id="overlay-close-mob">Close</button>
     <button class="overlay-nav overlay-nav--prev" id="ov-prev" aria-label="Previous project">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M15 19l-7-7 7-7"/></svg>
     </button>
@@ -1031,6 +1030,7 @@ input[type=range]:active::-webkit-slider-thumb {
             <div class="ov-year" id="ov-year"></div>
             <div class="ov-desc" id="ov-desc"></div>
             <a class="ov-link" id="ov-link" href="#" target="_blank" style="display:none">View project ↗</a>
+            <button class="overlay-close-mob" id="overlay-close-mob">Close</button>
         </div>
     </div>
 </div>
