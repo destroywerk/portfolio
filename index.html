@@ -172,6 +172,7 @@ nav {
     color: #fff;
     letter-spacing: -0.03em;
     pointer-events: none;
+    transition: opacity 0.08s ease;
 }
 .hero-title .line { display: block; }
 
@@ -947,7 +948,7 @@ input[type=range]:active::-webkit-slider-thumb {
             </div>
             <div class="sl-item">
                 <div class="sl-top">
-                    <span class="sl-label">Ribbed</span>
+                    <span class="sl-label">Blocked</span>
                     <span class="sl-val" id="val-ribbed">0</span>
                 </div>
                 <input type="range" id="sl-ribbed" min="0" max="100" value="0" step="1">
@@ -1659,10 +1660,10 @@ function renderCanvas() {
         heroTitleEl.style.opacity = '1';
         return;
     }
-    heroTitleEl.style.opacity = '0';
-    // Fragment takes over when both are active (simpler, consistent)
+    // Render first, then hide DOM text to avoid a blank frame
     if (FX.fragment > 0) renderFragment();
     else renderRibbed();
+    heroTitleEl.style.opacity = '0';
 }
 
 /* ---- Master update — call after any FX change ---- */
