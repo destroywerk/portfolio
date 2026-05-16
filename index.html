@@ -140,6 +140,8 @@ nav {
 }
 .nav-links a:hover { opacity: .5; }
 .nav-clock { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.06em; color: #fff; }
+.nav-logo-clock { display: none; }
+.nav-left { display: flex; flex-direction: column; justify-content: center; }
 
 /* ===== HERO ===== */
 .hero {
@@ -555,25 +557,22 @@ input[type=range]:active::-webkit-slider-thumb {
 .interest-thumb img,
 .interest-thumb video {
     width: 100%; height: 100%; object-fit: cover;
-    transition: transform .7s var(--ease), filter .4s;
-    filter: grayscale(60%) contrast(1.1);
+    transition: transform .7s var(--ease);
 }
 .interest-card:hover .interest-thumb img,
-.interest-card:hover .interest-thumb video { transform: scale(1.04); filter: grayscale(0%) contrast(1.05); }
+.interest-card:hover .interest-thumb video { transform: scale(1.04); }
 
 /* Painting slideshow */
 .painting-slideshow { position: absolute; inset: 0; }
 .painting-slide {
     position: absolute; inset: 0;
     width: 100%; height: 100%; object-fit: cover;
-    filter: grayscale(60%) contrast(1.1);
     opacity: 0;
-    transition: opacity 1.2s ease, transform .7s var(--ease), filter .4s;
+    transition: opacity 1.2s ease, transform .7s var(--ease);
 }
 .painting-slide.active { opacity: 1; }
 .interest-card:hover .painting-slide.active {
     transform: scale(1.04);
-    filter: grayscale(0%) contrast(1.05);
 }
 .interest-card::after {
     content: ''; position: absolute; inset: 0;
@@ -753,7 +752,16 @@ input[type=range]:active::-webkit-slider-thumb {
 /* ===== MOBILE ===== */
 @media (max-width: 768px) {
     nav { padding: 1.25rem; }
-    .nav-clock { font-size: 0.44rem; }
+    .nav-clock { display: none; }
+    .nav-logo-clock {
+        display: block;
+        font-family: var(--font-mono);
+        font-size: 0.44rem;
+        letter-spacing: 0.14em;
+        color: rgba(255,255,255,0.55);
+        margin-top: 0.35rem;
+        white-space: nowrap;
+    }
     .hero { min-height: 100svh; }
     .hero-actions { top: 4rem; right: 1.25rem; }
 
@@ -919,13 +927,16 @@ input[type=range]:active::-webkit-slider-thumb {
 
 <!-- Nav -->
 <nav>
-    <a href="/" class="nav-logo">TG</a>
+    <div class="nav-left">
+        <a href="/" class="nav-logo">TG</a>
+        <div class="nav-logo-clock clock-display" id="clock-mob"></div>
+    </div>
     <ul class="nav-links">
         <li><a href="#work">Work</a></li>
         <li><a href="#about">About</a></li>
         <li><a href="#contact">Contact</a></li>
     </ul>
-    <div class="nav-clock" id="clock"></div>
+    <div class="nav-clock clock-display" id="clock"></div>
 </nav>
 
 <!-- Hero -->
@@ -1279,9 +1290,16 @@ setInterval(() => {
 function tick() {
     const n = new Date();
     const p = v => String(v).padStart(2, '0');
-    const tz = n.toLocaleTimeString('en-GB', { timeZoneName: 'short' }).split(' ').pop();
-    document.getElementById('clock').textContent =
-        `LOCAL TIME \u2022 ${p(n.getHours())}:${p(n.getMinutes())}:${p(n.getSeconds())} ${tz}`;
+    const parts = new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'Europe/London',
+        hour: '2-digit', minute: '2-digit', second: '2-digit',
+        hour12: false, timeZoneName: 'short'
+    }).formatToParts(n);
+    const get = t => parts.find(p => p.type === t)?.value ?? '';
+    const tz = get('timeZoneName');
+    const time = `${get('hour')}:${get('minute')}:${get('second')}`;
+    const text = `LOCAL TIME \u2022 ${time} ${tz}`;
+    document.querySelectorAll('.clock-display').forEach(el => el.textContent = text);
 }
 tick(); setInterval(tick, 1000);
 
