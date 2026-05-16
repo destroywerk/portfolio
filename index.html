@@ -601,7 +601,8 @@ input[type=range]:active::-webkit-slider-thumb {
     opacity: 0;
     transition: opacity 2s ease;
 }
-.portrait-wrap:hover .portrait-original { opacity: 1; }
+.portrait-wrap:hover .portrait-original,
+.portrait-wrap.portrait-toggled .portrait-original { opacity: 1; }
 /* Gradient blends portrait into #0c0b09 background on all edges */
 .portrait-wrap::after {
     content: '';
@@ -1716,6 +1717,25 @@ function setupReveals() {
 setupReveals();
 
 /* Portrait: pre-rendered as portrait_divide.png — no canvas needed */
+
+/* ============================================================
+   PORTRAIT TOGGLE (click / tap)
+   ============================================================ */
+(function () {
+    const wrap = document.getElementById('portrait-wrap');
+    if (!wrap) return;
+    let toggled = false;
+
+    function handleToggle(e) {
+        /* prevent ghost click on touch devices */
+        if (e.type === 'touchend') e.preventDefault();
+        toggled = !toggled;
+        wrap.classList.toggle('portrait-toggled', toggled);
+    }
+
+    wrap.addEventListener('click',    handleToggle);
+    wrap.addEventListener('touchend', handleToggle, { passive: false });
+}());
 </script>
 </body>
 </html>
