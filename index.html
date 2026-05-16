@@ -774,7 +774,7 @@ input[type=range]:active::-webkit-slider-thumb {
 
 /* overlay nav zones */
 .overlay-nav {
-    position: absolute; top: 0; bottom: 0; width: 100px;
+    position: absolute; top: 5rem; bottom: 0; width: 100px;
     background: none; border: none; cursor: none; z-index: 30;
     display: flex; align-items: center; justify-content: center;
     opacity: 0; transition: opacity .4s var(--ease);
@@ -789,7 +789,9 @@ input[type=range]:active::-webkit-slider-thumb {
     pointer-events: none;
     transition: color .2s, transform .3s var(--ease);
 }
+.overlay-nav--prev svg { color: rgba(0,0,0,.55); }
 .overlay-nav:hover svg { color: rgba(255,255,255,.9); }
+.overlay-nav--prev:hover svg { color: rgba(0,0,0,.9); }
 .overlay-nav--prev:hover svg { transform: translateX(-3px); }
 .overlay-nav--next:hover svg { transform: translateX(3px); }
 
