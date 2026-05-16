@@ -172,7 +172,6 @@ nav {
     color: #fff;
     letter-spacing: -0.03em;
     pointer-events: none;
-    transition: opacity 0.08s ease;
 }
 .hero-title .line { display: block; }
 
@@ -756,6 +755,7 @@ input[type=range]:active::-webkit-slider-thumb {
     nav { padding: 1.25rem; }
     .nav-clock { display: none; }
     .hero { min-height: 100svh; }
+    .hero-actions { top: 4rem; right: 1.25rem; }
 
     /* Hero — scale title purely off viewport width so it never overflows */
     .hero { padding: 1.25rem; }
@@ -825,11 +825,12 @@ input[type=range]:active::-webkit-slider-thumb {
     .overlay-asset { flex: none; height: 45vh; border-right: none; border-bottom: 1px solid rgba(255,255,255,.07); }
     .overlay-nav { display: none; }
     .overlay-close { display: none; }
-    #ov-close-mob { display: block; }
+    #ov-close-mob-outer { display: block; }
 }
 
 /* mobile close button (hidden on desktop) */
-#ov-close-mob {
+/* mobile close button — lives outside #overlay so position:fixed is always viewport-relative */
+#ov-close-mob-outer {
     display: none;
     position: fixed;
     bottom: 1.5rem;
@@ -848,7 +849,9 @@ input[type=range]:active::-webkit-slider-thumb {
     white-space: nowrap;
     transition: border-color .2s, color .2s;
 }
-#ov-close-mob:active { color: #fff; border-color: rgba(255,255,255,.7); }
+#ov-close-mob-outer:active { color: #fff; border-color: rgba(255,255,255,.7); }
+/* hide the legacy inner buttons */
+#ov-close-mob { display: none !important; }
 
 /* ov-inner */
 .ov-inner {
@@ -1112,6 +1115,9 @@ input[type=range]:active::-webkit-slider-thumb {
     <button class="overlay-close-mob" id="overlay-close-mob" style="display:none">Close</button>
     <button id="ov-close-mob">CLOSE</button>
 </div>
+
+<!-- Mobile close button — outside overlay so position:fixed is viewport-relative -->
+<button id="ov-close-mob-outer" style="display:none">CLOSE</button>
 
 <script>
 /* ============================================================
@@ -1440,12 +1446,15 @@ function openOverlay(idx, isNav = false) {
 
     overlay.classList.add('open');
     if (!isNav) document.body.style.overflow = 'hidden';
-}
+    const closeMob = document.getElementById('ov-close-mob-outer');
+    if (closeMob) closeMob.style.display = '';
 
 function closeOverlay() {
     if (imgCycleInterval) { clearInterval(imgCycleInterval); imgCycleInterval = null; }
     overlay.classList.remove('open');
     document.body.style.overflow = '';
+    const closeMob = document.getElementById('ov-close-mob-outer');
+    if (closeMob) closeMob.style.display = 'none';
 }
 
 function navigateOverlay(dir) {
@@ -1471,7 +1480,7 @@ function navigateOverlay(dir) {
 
 document.getElementById('overlay-close').addEventListener('click', closeOverlay);
 document.getElementById('overlay-close-mob').addEventListener('click', closeOverlay);
-document.getElementById('ov-close-mob').addEventListener('click', closeOverlay);
+document.getElementById('ov-close-mob-outer').addEventListener('click', closeOverlay);
 overlay.addEventListener('click', e => { if (e.target === overlay) closeOverlay(); });
 document.addEventListener('keydown', e => {
     if (e.key === 'Escape')     closeOverlay();
