@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tim Green — Designer</title>
-    <meta name="description" content="Tim Green — Principal Product Designer. 15 years solving complex problems elegantly. Ex-Google. Ex-Personio. Now at Preply.">
+    <title>Tim Green • Designer</title>
+    <meta name="description" content="Tim Green • Principal Product Designer. 15 years solving complex problems elegantly. Ex-Google. Ex-Personio. Now at Preply.">
     <!-- Open Graph / link preview -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://timgreen.design/">
@@ -95,9 +95,8 @@ a { text-decoration: none; color: inherit; }
 }
 .cursor-label {
     font-family: var(--font-mono);
-    font-size: 0.42rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    font-size: 0.5rem;
+    letter-spacing: normal;
     color: #000;
     opacity: 0;
     white-space: nowrap;
@@ -129,17 +128,17 @@ nav {
 }
 .nav-logo {
     font-family: var(--font-head); font-weight: 800;
-    font-size: 0.88rem; letter-spacing: 0.08em; text-transform: uppercase;
+    font-size: 0.96rem; letter-spacing: normal;
     color: #fff;
 }
 .nav-links { display: flex; gap: 2.5rem; list-style: none; position: absolute; left: 50%; transform: translateX(-50%); }
 .nav-links a {
-    font-family: var(--font-mono); font-size: 0.62rem;
-    letter-spacing: 0.12em; text-transform: uppercase; color: #fff;
+    font-family: var(--font-mono); font-size: 0.7rem;
+    letter-spacing: normal; color: #fff;
     transition: opacity .2s;
 }
 .nav-links a:hover { opacity: .5; }
-.nav-clock { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.06em; color: #fff; }
+.nav-clock { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: normal; color: #fff; }
 .nav-logo-clock { display: none; }
 .nav-left { display: flex; flex-direction: column; justify-content: center; }
 
@@ -159,7 +158,7 @@ nav {
 }
 .hero-inner { position: relative; z-index: 1; }
 
-/* title wrap — holds original title + frag strips + dissolve canvas */
+/* title wrap: holds original title + frag strips + dissolve canvas */
 .hero-title-wrap {
     position: relative;
     user-select: none;
@@ -189,7 +188,7 @@ nav {
     will-change: transform;
     overflow: visible;
 }
-/* frag copy of the title — must match hero-title exactly */
+/* frag copy of the title: must match hero-title exactly */
 .frag-title {
     font-size: clamp(5rem, 16vw, 18rem);
     font-weight: 800;
@@ -230,15 +229,14 @@ nav {
 }
 .sl-label {
     font-family: var(--font-mono);
-    font-size: 0.52rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
+    font-size: 0.6rem;
+    letter-spacing: normal;
     color: rgba(255,255,255,0.3);
 }
 .sl-val {
     font-family: var(--font-mono);
-    font-size: 0.52rem;
-    letter-spacing: 0.06em;
+    font-size: 0.6rem;
+    letter-spacing: normal;
     color: rgba(255,255,255,0.3);
     min-width: 2ch;
     text-align: right;
@@ -294,9 +292,8 @@ input[type=range]:active::-webkit-slider-thumb {
 .hero-left { display: flex; flex-direction: column; gap: 0.35rem; }
 .hero-role {
     font-family: var(--font-mono);
-    font-size: 0.6rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
+    font-size: 0.68rem;
+    letter-spacing: normal;
     color: rgba(255,255,255,0.3);
     white-space: nowrap;
 }
@@ -308,40 +305,35 @@ input[type=range]:active::-webkit-slider-thumb {
     overflow: hidden;
     white-space: nowrap;
 }
-    letter-spacing: -0.01em;
-    min-height: 1.4em;
-}
 
 /* center scroll */
 .hero-mid {
+    /* Holds the space the indicator line used to occupy, so removing it
+       leaves the bar height and everything above it untouched. */
+    --scroll-reserve: 4.97rem;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     padding-bottom: 0.1rem;
+    min-height: var(--scroll-reserve);
 }
 .hero-scroll {
     font-family: var(--font-mono);
-    font-size: 0.58rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.3);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.6rem;
+    font-size: 0.66rem;
+    letter-spacing: normal;
+    color: rgba(255,255,255,0.6);
+    animation: scroll-hint 2s ease-in-out infinite;
+    /* Drops the word onto the role line. Every column in the bar is bottom
+       aligned, so the reserved column overhangs the left column by exactly
+       the difference in their heights. The left column is the role line plus
+       its row gap plus the descriptor, and the descriptor is sized from a
+       clamp(), so this has to track that rather than be a fixed value. */
+    padding-top: calc(var(--scroll-reserve) - 1rem - 0.35rem - 1.4 * clamp(0.95rem, 2vw, 1.5rem));
 }
-.hero-scroll::after {
-    content: '';
-    display: block;
-    width: 1px;
-    height: 3.5rem; /* fixed — never changes, so nothing above ever shifts */
-    background: rgba(255,255,255,0.3);
-    transform-origin: top center;
-    animation: scroll-pulse 2s ease-in-out infinite;
-}
-@keyframes scroll-pulse {
-    0%, 100% { transform: scaleY(0.57); opacity: 0.3; }
-    50%       { transform: scaleY(1);    opacity: 0.7; }
+/* Transform-only, so the bounce can never feed back into layout. */
+@keyframes scroll-hint {
+    0%, 100% { transform: translateY(0);   opacity: 0.25; }
+    50%      { transform: translateY(4px); opacity: 0.75; }
 }
 
 /* right buttons */
@@ -356,9 +348,8 @@ input[type=range]:active::-webkit-slider-thumb {
     border: 1px solid rgba(255,255,255,0.2);
     color: rgba(255,255,255,0.45);
     font-family: var(--font-mono);
-    font-size: 0.58rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
+    font-size: 0.66rem;
+    letter-spacing: normal;
     padding: 0.6rem 1rem;
     cursor: none;
     text-align: center;
@@ -393,9 +384,8 @@ input[type=range]:active::-webkit-slider-thumb {
 }
 .marquee-item {
     font-family: var(--font-mono);
-    font-size: 0.6rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    font-size: 0.68rem;
+    letter-spacing: normal;
     padding: 0 2.5rem;
     color: var(--muted);
 }
@@ -408,7 +398,7 @@ input[type=range]:active::-webkit-slider-thumb {
 /* ===== SECTION SHARED ===== */
 .section-label {
     font-family: var(--font-mono);
-    font-size: 0.58rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted);
+    font-size: 0.66rem; letter-spacing: normal; color: var(--muted);
 }
 .section-head {
     display: flex; align-items: baseline; justify-content: space-between;
@@ -478,8 +468,8 @@ input[type=range]:active::-webkit-slider-thumb {
 }
 .project-card:hover .project-meta { transform: translateY(0); }
 .project-cat {
-    font-family: var(--font-mono); font-size: 0.56rem;
-    letter-spacing: 0.18em; text-transform: uppercase;
+    font-family: var(--font-mono); font-size: 0.64rem;
+    letter-spacing: normal;
     color: rgba(0,0,0,0.45); margin-bottom: 0.35rem; transition: color .3s;
 }
 .project-card:hover .project-cat { color: rgba(255,255,255,0.5); }
@@ -490,8 +480,8 @@ input[type=range]:active::-webkit-slider-thumb {
 }
 .project-card:hover .project-name { color: #fff; }
 .project-year {
-    font-family: var(--font-mono); font-size: 0.56rem;
-    letter-spacing: 0.08em; color: rgba(0,0,0,0.4); margin-top: 0.45rem; transition: color .3s;
+    font-family: var(--font-mono); font-size: 0.64rem;
+    letter-spacing: normal; color: rgba(0,0,0,0.4); margin-top: 0.45rem; transition: color .3s;
 }
 .project-card:hover .project-year { color: rgba(255,255,255,0.4); }
 
@@ -539,7 +529,7 @@ input[type=range]:active::-webkit-slider-thumb {
 }
 .stat-cell { background: var(--bg); padding: 3rem 2.5rem; }
 .stat-num { font-size: clamp(3rem, 7vw, 6rem); font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
-.stat-desc { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-top: 0.75rem; }
+.stat-desc { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: normal; color: var(--muted); margin-top: 0.75rem; }
 
 /* ===== INTERESTS ===== */
 .interests { padding: 6rem 2.5rem; }
@@ -579,10 +569,10 @@ input[type=range]:active::-webkit-slider-thumb {
     background: linear-gradient(to top, rgba(0,0,0,.82) 0%, rgba(0,0,0,.3) 50%, transparent 100%);
 }
 .interest-content { position: relative; z-index: 1; color: #fff; }
-.interest-num { font-family: var(--font-mono); font-size: 0.56rem; letter-spacing: 0.18em; color: rgba(255,255,255,.4); margin-bottom: 2.5rem; }
+.interest-num { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: normal; color: rgba(255,255,255,.4); margin-bottom: 2.5rem; }
 .interest-title { font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: .75rem; }
 .interest-desc { font-size: 0.85rem; line-height: 1.6; color: rgba(255,255,255,.6); max-width: 32ch; margin-bottom: 1.5rem; font-family: var(--font-body); }
-.interest-link { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,.5); display: inline-flex; align-items: center; gap: .4rem; transition: color .2s; }
+.interest-link { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: normal; color: rgba(255,255,255,.5); display: inline-flex; align-items: center; gap: .4rem; transition: color .2s; }
 .interest-card:hover .interest-link { color: rgba(255,255,255,.9); }
 
 /* ===== FOOTER ===== */
@@ -602,7 +592,7 @@ input[type=range]:active::-webkit-slider-thumb {
 .footer-headline { font-size: clamp(2.67rem, 9.33vw, 10rem); font-weight: 800; color: #fff; letter-spacing: -0.04em; line-height: 0.85; margin-bottom: 3rem; }
 .footer-email {
     display: inline-flex; align-items: center; gap: .5rem;
-    font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase;
+    font-family: var(--font-mono); font-size: 0.86rem; letter-spacing: normal;
     color: rgba(255,255,255,.5); border: 1px solid rgba(255,255,255,.15);
     padding: 1rem 1.75rem; transition: border-color .2s, color .2s; cursor: none;
 }
@@ -613,9 +603,9 @@ input[type=range]:active::-webkit-slider-thumb {
     position: absolute; bottom: 3rem; left: 2.5rem; right: 2.5rem; z-index: 1;
 }
 .footer-links { display: flex; gap: 2rem; flex-wrap: wrap; }
-.footer-links a { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,.32); transition: color .2s; }
+.footer-links a { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: normal; color: rgba(255,255,255,.32); transition: color .2s; }
 .footer-links a:hover { color: rgba(255,255,255,.85); }
-.footer-copy { font-family: var(--font-mono); font-size: 0.56rem; color: rgba(255,255,255,.2); letter-spacing: 0.05em; }
+.footer-copy { font-family: var(--font-mono); font-size: 0.64rem; color: rgba(255,255,255,.2); letter-spacing: normal; }
 
 /* ===== PORTRAIT ===== */
 .portrait-wrap {
@@ -728,8 +718,8 @@ input[type=range]:active::-webkit-slider-thumb {
 .overlay.open .overlay-info { transform: translateY(0); opacity: 1; }
 
 .ov-cat {
-    font-family: var(--font-mono); font-size: 0.6rem;
-    letter-spacing: 0.2em; text-transform: uppercase;
+    font-family: var(--font-mono); font-size: 0.68rem;
+    letter-spacing: normal;
     color: rgba(255,255,255,.35); margin-bottom: 1rem;
 }
 .ov-title {
@@ -738,8 +728,8 @@ input[type=range]:active::-webkit-slider-thumb {
     margin-bottom: .5rem;
 }
 .ov-year {
-    font-family: var(--font-mono); font-size: 0.6rem;
-    color: rgba(255,255,255,.3); letter-spacing: 0.08em;
+    font-family: var(--font-mono); font-size: 0.68rem;
+    color: rgba(255,255,255,.3); letter-spacing: normal;
     margin-bottom: 2rem;
 }
 .ov-desc {
@@ -748,8 +738,8 @@ input[type=range]:active::-webkit-slider-thumb {
 }
 .ov-link {
     display: inline-flex; align-items: center; gap: .5rem;
-    font-family: var(--font-mono); font-size: 0.62rem;
-    letter-spacing: 0.14em; text-transform: uppercase;
+    font-family: var(--font-mono); font-size: 0.7rem;
+    letter-spacing: normal;
     color: rgba(255,255,255,.45); border: 1px solid rgba(255,255,255,.18);
     padding: .75rem 1.25rem; transition: color .2s, border-color .2s; cursor: none;
 }
@@ -772,8 +762,8 @@ input[type=range]:active::-webkit-slider-thumb {
         left: 1.25rem;
         display: block;
         font-family: var(--font-mono);
-        font-size: 0.44rem;
-        letter-spacing: 0.14em;
+        font-size: 0.52rem;
+        letter-spacing: normal;
         color: rgba(255,255,255,0.55);
         white-space: nowrap;
         pointer-events: none;
@@ -782,7 +772,7 @@ input[type=range]:active::-webkit-slider-thumb {
     .hero-actions { top: 4rem; right: 1.25rem; }
     .nav-links { position: static; left: auto; transform: none; margin-left: auto; padding-right: 1.25rem; }
 
-    /* Hero — scale title purely off viewport width so it never overflows */
+    /* Hero: scale title purely off viewport width so it never overflows */
     .hero { padding: 1.25rem; }
     .hero-title {
         font-size: clamp(2rem, 12.5vw, 5rem);
@@ -791,20 +781,20 @@ input[type=range]:active::-webkit-slider-thumb {
         min-height: 0; /* let content determine height */
     }
 
-    /* Sliders — tighter gap, smaller labels */
+    /* Sliders: tighter gap, smaller labels */
     .hero-sliders { gap: 0.6rem; margin-top: 1rem; }
-    .sl-label { font-size: 0.44rem; letter-spacing: 0.14em; }
-    .sl-val   { font-size: 0.44rem; }
+    .sl-label { font-size: 0.52rem; letter-spacing: normal; }
+    .sl-val   { font-size: 0.52rem; }
 
-    /* Hero bottom bar — stack left/right, hide scroll indicator */
+    /* Hero bottom bar: stack left/right, hide scroll indicator */
     .hero-bar {
         grid-template-columns: 1fr 1fr;
         gap: 0.75rem;
         align-items: end;
     }
-    .hero-mid { display: none; } /* hide scroll line — no room */
+    .hero-mid { display: none; } /* hide scroll line, no room */
     .hero-right { justify-content: flex-end; align-items: flex-end; }
-    .hero-btn { width: auto; padding: 0.55rem 0.75rem; font-size: 0.5rem; }
+    .hero-btn { width: auto; padding: 0.55rem 0.75rem; font-size: 0.58rem; }
 
     /* Work */
     .work { padding: 4rem 1.25rem; }
@@ -852,7 +842,7 @@ input[type=range]:active::-webkit-slider-thumb {
     .overlay-close { display: none; }
 }
 
-/* mobile close button — lives outside #overlay so position:fixed is always viewport-relative */
+/* mobile close button: lives outside #overlay so position:fixed is always viewport-relative */
 #ov-close-mob-outer {
     display: none;
     position: fixed;
@@ -863,9 +853,8 @@ input[type=range]:active::-webkit-slider-thumb {
     border: 1px solid rgba(255,255,255,.35);
     color: rgba(255,255,255,.85);
     font-family: var(--font-mono);
-    font-size: 0.58rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
+    font-size: 0.66rem;
+    letter-spacing: normal;
     padding: 0.8rem 2.5rem;
     cursor: pointer;
     z-index: 9000;
@@ -913,7 +902,7 @@ input[type=range]:active::-webkit-slider-thumb {
 @keyframes ov-enter-right{ from { transform: translateX( 4%)   scale(0.97); opacity: 0; } to { transform: translateX(0)   scale(1);    opacity: 1; } }
 @keyframes ov-enter-left { from { transform: translateX(-4%)   scale(0.97); opacity: 0; } to { transform: translateX(0)   scale(1);    opacity: 1; } }
 
-/* Extra-small — phones under 400px */
+/* Extra-small: phones under 400px */
 @media (max-width: 400px) {
     .hero-title { font-size: 12vw; }
     .hero-bar { grid-template-columns: 1fr; }
@@ -985,24 +974,24 @@ input[type=range]:active::-webkit-slider-thumb {
             </div>
             <div class="sl-item">
                 <div class="sl-top">
-                    <span class="sl-label">RGB Shift</span>
+                    <span class="sl-label">RGB shift</span>
                     <span class="sl-val" id="val-rgb">0</span>
                 </div>
                 <input type="range" id="sl-rgb" min="0" max="10" value="0" step="1">
             </div>
             <div class="sl-item">
                 <div class="sl-top">
-                    <span class="sl-label">Blocked</span>
-                    <span class="sl-val" id="val-ribbed">0</span>
+                    <span class="sl-label">Chroma bloom</span>
+                    <span class="sl-val" id="val-bloom">0</span>
                 </div>
-                <input type="range" id="sl-ribbed" min="0" max="100" value="0" step="1">
+                <input type="range" id="sl-bloom" min="0" max="100" value="0" step="1">
             </div>
         </div>
 
         <!-- Bottom bar -->
         <div class="hero-bar">
             <div class="hero-left">
-                <div class="hero-role">Principal Product Designer — London</div>
+                <div class="hero-role">Principal product designer • London</div>
                 <div class="hero-descriptor" id="descriptor">Solving complex problems elegantly.</div>
             </div>
             <div class="hero-mid">
@@ -1030,10 +1019,10 @@ input[type=range]:active::-webkit-slider-thumb {
 <section class="work" id="work">
     <div class="section-head reveal">
         <div>
-            <div class="section-label">Selected Work</div>
+            <div class="section-label">Selected work</div>
             <h2 class="section-title">Projects</h2>
         </div>
-        <div class="section-count" id="project-count">— 00</div>
+        <div class="section-count" id="project-count">• 00</div>
     </div>
     <div class="project-grid" id="project-grid"></div>
 </section>
@@ -1058,7 +1047,7 @@ input[type=range]:active::-webkit-slider-thumb {
 <section class="interests">
     <div class="section-head reveal">
         <div>
-            <div class="section-label">Beyond Design</div>
+            <div class="section-label">Beyond design</div>
             <h2 class="section-title">Other interests</h2>
         </div>
     </div>
@@ -1079,7 +1068,7 @@ input[type=range]:active::-webkit-slider-thumb {
             <div class="interest-content">
                 <div class="interest-num">01</div>
                 <div class="interest-title">Tim Green Studio</div>
-                <div class="interest-desc">Oil paintings exhibited and collected internationally. Studied Fine Art and Design — continues producing artwork throughout a design career.</div>
+                <div class="interest-desc">Oil paintings exhibited and collected internationally. Studied Fine Art and Design, and has continued producing artwork throughout a design career.</div>
                 <span class="interest-link">↗ View on Instagram</span>
             </div>
         </a>
@@ -1090,7 +1079,7 @@ input[type=range]:active::-webkit-slider-thumb {
             <div class="interest-content">
                 <div class="interest-num">02</div>
                 <div class="interest-title">Bamboo House Radio</div>
-                <div class="interest-desc">Monthly radio show with Martyn Riley on MusicBoxRadio — ambient, modern classical, found sounds, experimental music. 2nd Sunday every month, 11am–1pm.</div>
+                <div class="interest-desc">Monthly radio show with Martyn Riley on MusicBoxRadio, playing ambient, modern classical, found sounds and experimental music. 2nd Sunday every month, 11am–1pm.</div>
                 <span class="interest-link">↗ Listen live</span>
             </div>
         </a>
@@ -1100,9 +1089,9 @@ input[type=range]:active::-webkit-slider-thumb {
 <!-- Footer -->
 <footer class="footer" id="contact">
     <div class="portrait-wrap" id="portrait-wrap">
-        <img src="portrait-divide.png" class="portrait-canvas" alt="Tim Green — Divide by Tone">
+        <img src="portrait-divide.png" class="portrait-canvas" alt="Tim Green • Divide by Tone">
         <img src="portrait-og.png" class="portrait-original" alt="Tim Green">
-        <img src="portrait-light.png" class="portrait-light" alt="Tim Green — Light">
+        <img src="portrait-light.png" class="portrait-light" alt="Tim Green • Light">
     </div>
     <div class="footer-cta">
         <div class="footer-headline reveal" id="footer-headline">Let's<br>talk.</div>
@@ -1116,7 +1105,7 @@ input[type=range]:active::-webkit-slider-thumb {
             <a href="https://www.goodreads.com/user/show/182134610-tim-green" target="_blank">Goodreads</a>
             <a href="https://warpsoup.vercel.app/" target="_blank">Warp Soup</a>
         </div>
-        <div class="footer-copy">© 2026 Tim Green — Don't steal my stuff, that's not cool.</div>
+        <div class="footer-copy">© 2026 Tim Green • Don't steal my stuff, that's not cool.</div>
     </div>
 </footer>
 
@@ -1143,8 +1132,8 @@ input[type=range]:active::-webkit-slider-thumb {
     <button id="ov-close-mob">CLOSE</button>
 </div>
 
-<!-- Mobile close button — outside overlay so position:fixed is viewport-relative -->
-<button id="ov-close-mob-outer" style="display:none">CLOSE</button>
+<!-- Mobile close button: outside overlay so position:fixed is viewport-relative -->
+<button id="ov-close-mob-outer" style="display:none">Close</button>
 
 <script>
 /* ============================================================
@@ -1153,8 +1142,8 @@ input[type=range]:active::-webkit-slider-thumb {
 const PROJECTS = [
     {
         name: "Preply",
-        cat: "EdTech · Principal Designer",
-        year: "2025 — Present",
+        cat: "EdTech · Principal designer",
+        year: "2025 – Present",
         bg: "bg-dark-2", initial: "PR",
         thumb: "assets/swissdgets.gif",
         imgs: ["assets/swissdgets.gif", "assets/prepholder.png"],
@@ -1163,25 +1152,25 @@ const PROJECTS = [
     },
     {
         name: "Warp Soup",
-        cat: "Tool Design · Side Project",
+        cat: "Tool design · Side project",
         year: "2026",
         bg: "bg-dark-3", initial: "WS",
         img: "assets/warpsoup.gif",
         href: "https://warpsoup.vercel.app/",
-        desc: "A distortion tool built for creative exploration. Combines text and image warps, glitch effects, colour manipulation, data art, and animation — all in the browser. Built to inspire other designers that AI can be used to create more than just doc summaries.",
+        desc: "A distortion tool built for creative exploration. Combines text and image warps, glitch effects, colour manipulation, data art and animation, all in the browser. Built to inspire other designers that AI can be used to create more than just doc summaries.",
     },
     {
         name: "Personio",
-        cat: "HR SaaS · Principal Designer",
-        year: "2022 — 2025",
+        cat: "HR SaaS · Principal designer",
+        year: "2022 – 2025",
         bg: "bg-dark-4", initial: "PE",
         img: "assets/personio.gif",
         desc: "Supporting complex organisational structures at Europe's leading HR SaaS platform. Working as Principal Product Designer to redesign the key surfaces and develop the systems and frameworks that help large organisations run smoothly.",
     },
     {
         name: "Bamboo House Radio",
-        cat: "Branding · Side Project",
-        year: "2022 — Present",
+        cat: "Branding · Side project",
+        year: "2022 – Present",
         bg: "bg-dark-2", initial: "BH",
         img: "assets/bamboohouse2.gif",
         desc: "Identity and web design for a monthly radio show with Martyn Riley on MusicBoxRadio. Ambient, modern classical, found sounds, experimental music. 2nd Sunday every month.",
@@ -1189,7 +1178,7 @@ const PROJECTS = [
     {
         name: "Pixel Tablet",
         cat: "Tablet UX · Google",
-        year: "2021 — 2022",
+        year: "2021 – 2022",
         bg: "bg-dark-1", initial: "PT",
         img: "assets/pixeltablet.gif",
         desc: "Tablet platform design for Google's Pixel Tablet. Focused on the unique UX challenges of the tablet form factor, the hub mode interaction model, and the transition between handheld and docked states.",
@@ -1197,30 +1186,30 @@ const PROJECTS = [
     {
         name: "Pixel Watch",
         cat: "Wearables UX · Google",
-        year: "2019 — 2021",
+        year: "2019 – 2021",
         bg: "bg-dark-2", initial: "PW",
         img: "assets/pixelwatch.gif",
         desc: "Consumer wearable OS design for Google's first Pixel Watch. Responsible for core interaction design, all core 1P apps, and the overall UX framework for app experiences across Wear OS and wearables.",
     },
     {
         name: "Android",
-        cat: "Product Design · Google",
-        year: "2014 — 2019",
+        cat: "Product design · Google",
+        year: "2014 – 2019",
         bg: "bg-dark-1", initial: "AE",
         img: "assets/android.png",
         desc: "Designed the Work Profile, rich text editing in Gmail, and worked on countless Enterprise features for Android L, M, N, O & P releases including a registered patent \"Passcodes for computing devices\". Worked across the full Android Enterprise product suite, enabling businesses to deploy and manage Android devices at scale across mobile, wearable and tablet form factors.",
     },
     {
         name: "Divide",
-        cat: "App Design · Side Project",
-        year: "2011 — 2014",
+        cat: "App design · Side project",
+        year: "2011 – 2014",
         bg: "bg-dark-3", initial: "DV",
         img: "assets/divide.gif",
         desc: "Led design on the Android, iOS & iPadOS Apps (which itself comprised of Mail, Calendar, Contacts, Messages, Tasks, Browser) & created a web-based automated system for creating customised builds of the App for clients. I also worked to develop the brand and help to establish design as a discipline at the company.",
     },
     {
         name: "Werds",
-        cat: "App Design · Side Project",
+        cat: "App design · Side project",
         year: "2025",
         bg: "bg-dark-4", initial: "WD",
         img: "assets/werdsapp.gif",
@@ -1229,7 +1218,7 @@ const PROJECTS = [
     {
         name: "Random Design Work",
         cat: "Various · Freelance",
-        year: "2010 — Present",
+        year: "2010 – Present",
         bg: "bg-dark-1", initial: "RD",
         img: "assets/random.gif",
         desc: "A collection of freelance, experimental and graphic design work spanning over a decade. Brand identity, editorial, type design, motion and print.",
@@ -1247,13 +1236,13 @@ const DESCRIPTORS = [
 ];
 
 const MARQUEE_ITEMS = [
-    { t: "Product Design", b: false }, { t: "Google", b: true },
-    { t: "14 Years Experience", b: false }, { t: "Personio", b: true },
+    { t: "Product design", b: false }, { t: "Google", b: true },
+    { t: "15 years experience", b: false }, { t: "Personio", b: true },
     { t: "Android Enterprise", b: false }, { t: "Pixel Watch", b: false },
-    { t: "Warp Soup", b: true }, { t: "Oil Painting", b: false },
-    { t: "Bamboo House Radio", b: true }, { t: "System Design", b: false },
-    { t: "Wearables", b: false }, { t: "Principal Designer", b: true },
-    { t: "London", b: false }, { t: "Sci-Fi Reader", b: false },
+    { t: "Warp Soup", b: true }, { t: "Oil painting", b: false },
+    { t: "Bamboo House Radio", b: true }, { t: "System design", b: false },
+    { t: "Wearables", b: false }, { t: "Principal designer", b: true },
+    { t: "London", b: false }, { t: "Sci-fi reader", b: false },
 ];
 
 /* ============================================================
@@ -1413,7 +1402,7 @@ track.innerHTML = mi.map(i => `<span class="marquee-item">${i.b ? `<b>${i.t}</b>
    PROJECT GRID + OVERLAY
    ============================================================ */
 const grid = document.getElementById('project-grid');
-document.getElementById('project-count').textContent = `— ${PROJECTS.length < 10 ? '0' : ''}${PROJECTS.length}`;
+document.getElementById('project-count').textContent = `• ${PROJECTS.length < 10 ? '0' : ''}${PROJECTS.length}`;
 
 grid.innerHTML = PROJECTS.map((p, i) => `
     <div class="project-card ${p.wide ? 'wide' : ''} reveal" data-project="${i}">
@@ -1548,17 +1537,29 @@ if (!isMobile) {
 
 /* ============================================================
    EFFECTS ENGINE  v2
-   water 0-40 | fragment 0-15 | rgb shift 0-10 | ribbed glass 0-100
+   water 0-40 | fragment 0-15 | rgb shift 0-10 | chroma bloom 0-100
 
    Architecture:
-   - Water warp: SVG feTurbulence filter, animated seed in rAF
-   - RGB shift:  CSS text-shadow (no canvas), OR channel-split in offCanvas
-   - Fragment:   Seeded pixel-block scatter on canvas (STATIC per slider val)
-   - Ribbed:     Pixel-column compression on canvas (STATIC per slider val)
+   - Water warp:   SVG feTurbulence filter, seed animated on hover
+   - RGB shift:    CSS text-shadow (no canvas), OR channel-split in offCanvas
+   - Fragment:     Seeded pixel-block scatter on canvas (STATIC per slider val)
+   - Chroma bloom: Blurred channel fringes screened over the composed canvas
    Only water runs in rAF. Canvas effects redraw once per slider change.
    ============================================================ */
-const FX = { water: 0, fragment: 0, rgbShift: 0, ribbed: 0 };
+const FX = { water: 0, fragment: 0, rgbShift: 0, chromaBloom: 0 };
 const DPR = Math.min(window.devicePixelRatio || 1, 2);
+
+/* Both the RGB split and the bloom fringe run along this diagonal. */
+const FX_ANGLE = 45 * Math.PI / 180;
+
+/* Hover drift tuning. These periods are long on purpose: the title should
+   read as breathing rather than moving. The two water periods are deliberately
+   not multiples of each other, so the horizontal and vertical frequencies
+   never swing in step and the surface keeps shifting shape. */
+const HOVER_BLOOM_PERIOD   = 24; // seconds per full rotation of the bloom fringe
+const HOVER_WATER_PERIOD_X = 24; // seconds per cycle of the horizontal frequency
+const HOVER_WATER_PERIOD_Y = 31; // seconds per cycle of the vertical frequency
+const HOVER_WATER_SWING    = 0.15; // fraction each frequency drifts either side
 
 const feTurb      = document.getElementById('fe-turb');
 const feDisp      = document.getElementById('fe-disp');
@@ -1573,21 +1574,21 @@ const slInputs = {
     water:  document.getElementById('sl-water'),
     frag:   document.getElementById('sl-frag'),
     rgb:    document.getElementById('sl-rgb'),
-    ribbed: document.getElementById('sl-ribbed'),
+    bloom:  document.getElementById('sl-bloom'),
 };
 const slVals = {
     water:  document.getElementById('val-water'),
     frag:   document.getElementById('val-frag'),
     rgb:    document.getElementById('val-rgb'),
-    ribbed: document.getElementById('val-ribbed'),
+    bloom:  document.getElementById('val-bloom'),
 };
 
 slInputs.water.addEventListener('input',  () => { FX.water    = +slInputs.water.value;  slVals.water.textContent  = FX.water;    updateFX(); });
 slInputs.frag.addEventListener('input',   () => { FX.fragment = +slInputs.frag.value;   slVals.frag.textContent   = FX.fragment; updateFX(); });
 slInputs.rgb.addEventListener('input',    () => { FX.rgbShift = +slInputs.rgb.value;    slVals.rgb.textContent    = FX.rgbShift; updateFX(); });
-slInputs.ribbed.addEventListener('input', () => { FX.ribbed   = +slInputs.ribbed.value; slVals.ribbed.textContent = FX.ribbed;   updateFX(); });
+slInputs.bloom.addEventListener('input',  () => { FX.chromaBloom = +slInputs.bloom.value; slVals.bloom.textContent = FX.chromaBloom; updateFX(); });
 
-/* ---- Canvas sizing — DPR-aware, no resize unless dimensions change ---- */
+/* ---- Canvas sizing: DPR-aware, no resize unless dimensions change ---- */
 function resizeCanvas() {
     const r = titleWrap.getBoundingClientRect();
     if (!r.width || !r.height) return false;
@@ -1603,14 +1604,14 @@ function resizeCanvas() {
 resizeCanvas();
 window.addEventListener('resize', () => { resizeCanvas(); renderCanvas(); });
 
-/* ---- Font-load guard: canvas text uses Syne — don't render until loaded ---- */
+/* ---- Font-load guard: canvas text uses Syne, don't render until loaded ---- */
 let fontsLoaded = false;
 document.fonts.ready.then(() => { fontsLoaded = true; _metricsCache = null; });
 
 /* ---- Derive canvas text positions from actual DOM span rects ----
    Using getBoundingClientRect() on the real spans is the only truly
    Measure the CSS alphabetic baseline directly by inserting a zero-size
-   probe element — no font-metric maths, no line-height assumptions. ---- */
+   probe element: no font-metric maths, no line-height assumptions. ---- */
 let _metricsCache = null;
 window.addEventListener('resize', () => { _metricsCache = null; });
 
@@ -1624,7 +1625,7 @@ function getMetrics() {
     const r1 = lineEl1.getBoundingClientRect();
     const r2 = lineEl2.getBoundingClientRect();
 
-    // Probe only inserted into line-1 (shorter text — never wraps).
+    // Probe only inserted into line-1 (shorter text, never wraps).
     // Line-2 baseline is derived from the difference in element tops so we
     // never accidentally push the probe onto a new line inside "GREEN".
     const p = document.createElement('span');
@@ -1643,13 +1644,13 @@ function getMetrics() {
 }
 
 /* ---- Draw both text lines onto a context ---- */
-function fillLines(c, m, dx, style) {
+function fillLines(c, m, dx, dy, style) {
     c.font = `800 ${m.cf}px 'Syne', system-ui, sans-serif`;
     c.textBaseline = 'alphabetic';
     if ('letterSpacing' in c) c.letterSpacing = `${Math.round(m.cf * -0.03)}px`;
     c.fillStyle = style;
-    c.fillText('TIM',   m.x + dx, m.y1);
-    c.fillText('GREEN', m.x + dx, m.y2);
+    c.fillText('TIM',   m.x + dx, m.y1 + dy);
+    c.fillText('GREEN', m.x + dx, m.y2 + dy);
 }
 
 /* ---- Render text to offCanvas, with optional RGB channel-split ---- */
@@ -1659,61 +1660,135 @@ function renderToOff() {
     offCtx.clearRect(0, 0, offCanvas.width, offCanvas.height);
     const rgbPx = FX.rgbShift * 2.5 * DPR; // 0-10 → 0-25 logical px
     if (rgbPx > 0.5) {
+        // Red travels up-right along the diagonal, blue back down-left.
+        const rx = Math.cos(FX_ANGLE) * rgbPx;
+        const ry = -Math.sin(FX_ANGLE) * rgbPx;
         offCtx.globalCompositeOperation = 'source-over';
-        fillLines(offCtx, m, rgbPx, 'rgb(255,0,0)');
+        fillLines(offCtx, m, rx, ry, 'rgb(255,0,0)');
         offCtx.globalCompositeOperation = 'screen';
-        fillLines(offCtx, m, 0, 'rgb(0,255,0)');
+        fillLines(offCtx, m, 0, 0, 'rgb(0,255,0)');
         offCtx.globalCompositeOperation = 'screen';
-        fillLines(offCtx, m, -Math.round(rgbPx * 0.75), 'rgb(0,0,255)');
+        fillLines(offCtx, m, -rx * 0.75, -ry * 0.75, 'rgb(0,0,255)');
         offCtx.globalCompositeOperation = 'source-over';
     } else {
-        fillLines(offCtx, m, 0, '#fff');
+        fillLines(offCtx, m, 0, 0, '#fff');
     }
 }
 
-/* ---- WATER WARP — SVG displacement filter, animated ---- */
-function applyWater() {
+/* ---- WATER WARP: SVG displacement filter, animated on hover ---- */
+function applyWater(driftSeconds = null) {
     if (FX.water < 1) { titleWrap.style.filter = 'none'; return; }
     const t = FX.water / 40;
     // Wider low-frequency waves, scale ramps to 80px displacement at max
-    feTurb.setAttribute('baseFrequency', `${(0.006 + t * 0.005).toFixed(4)} ${(0.012 + t * 0.01).toFixed(4)}`);
+    let fx = 0.006 + t * 0.005;
+    let fy = 0.012 + t * 0.01;
+    if (driftSeconds !== null) {
+        /* Hover drifts the frequencies around whatever the slider dialled in,
+           so the slider still owns the intensity and hover only adds motion.
+           Frequency interpolates, unlike the integer seed, which is what makes
+           this flow rather than flicker between unrelated noise fields. */
+        fx *= 1 + HOVER_WATER_SWING * Math.sin(2 * Math.PI * driftSeconds / HOVER_WATER_PERIOD_X);
+        fy *= 1 + HOVER_WATER_SWING * Math.sin(2 * Math.PI * driftSeconds / HOVER_WATER_PERIOD_Y);
+    }
+    // Five decimals: at four, the drift lands in visible steps.
+    feTurb.setAttribute('baseFrequency', `${fx.toFixed(5)} ${fy.toFixed(5)}`);
     feDisp.setAttribute('scale', t * 80);
     titleWrap.style.filter = 'url(#warp-filter)';
 }
 
-/* ---- RGB SHIFT — CSS text-shadow when canvas is not in use ---- */
+/* ---- RGB SHIFT: CSS text-shadow when canvas is not in use ---- */
 function applyRGBShift() {
-    if (FX.ribbed > 0 || FX.fragment > 0) {
+    if (FX.chromaBloom > 0 || FX.fragment > 0) {
         // Handled inside offCanvas channel-split render
         document.querySelectorAll('.hero-title .line').forEach(l => l.style.textShadow = '');
         return;
     }
     const px = FX.rgbShift * 2.5; // 0-10 → 0-25px
+    const rx = (Math.cos(FX_ANGLE) * px).toFixed(1);
+    const ry = (-Math.sin(FX_ANGLE) * px).toFixed(1);
+    const bx = (-Math.cos(FX_ANGLE) * px * 0.75).toFixed(1);
+    const by = (Math.sin(FX_ANGLE) * px * 0.75).toFixed(1);
     document.querySelectorAll('.hero-title .line').forEach(l => {
         l.style.textShadow = px > 0.3
-            ? `${px}px 0 rgba(255,30,60,0.8), ${-Math.round(px * 0.75)}px 0 rgba(0,210,255,0.8)`
+            ? `${rx}px ${ry}px rgba(255,30,60,0.8), ${bx}px ${by}px rgba(0,210,255,0.8)`
             : '';
     });
 }
 
-/* ---- RIBBED GLASS — pixel-column compression toward rib centres ---- */
-function renderRibbed() {
-    renderToOff();
-    const intensity = FX.ribbed / 100;
-    const ribW = 30 * DPR;
-    const w = canvas.width, h = canvas.height;
-    ctx.clearRect(0, 0, w, h);
-    for (let x = 0; x < w; x++) {
-        const ribStart  = Math.floor(x / ribW) * ribW;
-        const ribCenter = ribStart + ribW / 2;
-        const srcX = Math.round(x + (ribCenter - x) * intensity);
-        ctx.drawImage(offCanvas, Math.max(0, Math.min(w - 1, srcX)), 0, 1, h, x, 0, 1, h);
-    }
+/* ---- CHROMA BLOOM: blurred channel fringes screened back over the scene ----
+   Ported from Warp Soup's applyTextChromaBloom. Channel isolation is done on
+   the GPU rather than with getImageData, because per-pixel round-trips on a
+   DPR-scaled canvas stall the drag. Multiplying against a pure primary gives
+   the same result, and since multiply leaves the whole surface opaque,
+   destination-in restores the text's original alpha afterwards. ---- */
+const bloomBase = document.createElement('canvas'); // snapshot of the composed scene
+const bloomChan = document.createElement('canvas'); // one isolated channel
+const bloomBlur = document.createElement('canvas'); // that channel, blurred + offset
+
+function sizeBloomCanvases(w, h) {
+    if (bloomBase.width === w && bloomBase.height === h) return;
+    bloomBase.width  = bloomChan.width  = bloomBlur.width  = w;
+    bloomBase.height = bloomChan.height = bloomBlur.height = h;
 }
 
-/* ---- FRAGMENT DISSOLVE — seeded pixel-block scatter (static per value) ----
+function drawBloomChannel(colour, ox, oy, blurPx) {
+    const w = canvas.width, h = canvas.height;
+
+    const cc = bloomChan.getContext('2d');
+    cc.globalCompositeOperation = 'source-over';
+    cc.clearRect(0, 0, w, h);
+    cc.drawImage(bloomBase, 0, 0);
+    cc.globalCompositeOperation = 'multiply';
+    cc.fillStyle = colour;
+    cc.fillRect(0, 0, w, h);
+    cc.globalCompositeOperation = 'destination-in';
+    cc.drawImage(bloomBase, 0, 0);
+    cc.globalCompositeOperation = 'source-over';
+
+    const bc = bloomBlur.getContext('2d');
+    bc.filter = 'none';
+    bc.clearRect(0, 0, w, h);
+    bc.filter = `blur(${blurPx}px)`;
+    bc.drawImage(bloomChan, ox, oy);
+    bc.filter = 'none';
+
+    ctx.drawImage(bloomBlur, 0, 0);
+}
+
+/* Post-processes whatever the canvas already holds, so the bloom sits on top
+   of the fragment scatter rather than competing with it, the same way Warp
+   Soup blooms its fully composed scene. `angle` defaults to the static
+   FX_ANGLE; the hover loop passes its own value so the shared constant, and
+   therefore the RGB shift, is never mutated. */
+function applyChromaBloom(angle = FX_ANGLE) {
+    const amt = FX.chromaBloom;
+    const w = canvas.width, h = canvas.height;
+    sizeBloomCanvases(w, h);
+
+    const base = bloomBase.getContext('2d');
+    base.globalCompositeOperation = 'source-over';
+    base.clearRect(0, 0, w, h);
+    base.drawImage(canvas, 0, 0);
+
+    const blurPx = (amt / 5) * DPR;
+    const off    = (amt / 5) * DPR;
+    const dx  = Math.cos(angle) * off;
+    const dy  = Math.sin(angle) * off;
+    const dx2 = Math.cos(angle + Math.PI / 2) * off * 0.5;
+    const dy2 = Math.sin(angle + Math.PI / 2) * off * 0.5;
+
+    ctx.globalCompositeOperation = 'screen';
+    ctx.globalAlpha = amt / 100;
+    drawBloomChannel('#f00',  dx,  dy,  blurPx);
+    drawBloomChannel('#00f', -dx, -dy,  blurPx);
+    drawBloomChannel('#0f0',  dx2, dy2, blurPx);
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.globalAlpha = 1;
+}
+
+/* ---- FRAGMENT DISSOLVE: seeded pixel-block scatter (static per value) ----
    Uses a linear congruential generator so the same slider position always
-   produces the same pattern — no animation, no random jitter. ---- */
+   produces the same pattern: no animation, no random jitter. ---- */
 function renderFragment() {
     renderToOff();
     const v = FX.fragment / 15; // 0-1
@@ -1746,25 +1821,27 @@ function renderFragment() {
 }
 
 /* ---- Composite canvas render (called once per updateFX) ---- */
-function renderCanvas() {
+function renderCanvas(bloomAngle = FX_ANGLE) {
     if (!fontsLoaded || !resizeCanvas()) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const useCanvas = FX.ribbed > 0 || FX.fragment > 0;
+    const useCanvas = FX.chromaBloom > 0 || FX.fragment > 0;
     if (!useCanvas) {
         heroTitleEl.style.opacity = '1';
         return;
     }
     heroTitleEl.style.opacity = '0';
+    // Compose the scene first, then bloom it, so the two effects stack.
     if (FX.fragment > 0) renderFragment();
-    else renderRibbed();
+    else { renderToOff(); ctx.drawImage(offCanvas, 0, 0); }
+    if (FX.chromaBloom > 0) applyChromaBloom(bloomAngle);
 }
 
-/* ---- Master update — call after any FX change ---- */
+/* ---- Master update: call after any FX change ---- */
 function updateFX() {
     applyWater();
     applyRGBShift();
     renderCanvas();
-    if (FX.ribbed === 0 && FX.fragment === 0) {
+    if (FX.chromaBloom === 0 && FX.fragment === 0) {
         heroTitleEl.style.opacity = '1';
     }
 }
@@ -1775,24 +1852,65 @@ function pushFX() {
     slInputs.water.value   = FX.water;
     slInputs.frag.value    = FX.fragment;
     slInputs.rgb.value     = FX.rgbShift;
-    slInputs.ribbed.value  = FX.ribbed;
+    slInputs.bloom.value   = FX.chromaBloom;
     slVals.water.textContent   = Math.round(FX.water);
     slVals.frag.textContent    = Math.round(FX.fragment);
     slVals.rgb.textContent     = Math.round(FX.rgbShift);
-    slVals.ribbed.textContent  = Math.round(FX.ribbed);
+    slVals.bloom.textContent   = Math.round(FX.chromaBloom);
     updateFX();
 }
 
 /* ============================================================
-   DRAG ON TITLE  (← → = water + rgb,  ↑ ↓ = fragment + ribbed)
+   DRAG ON TITLE  (← → = water + rgb,  ↑ ↓ = fragment + chroma bloom)
    ============================================================ */
 let isDragging = false;
 let dragStart  = { x: 0, y: 0 };
-let fxAtDrag   = { water: 0, fragment: 0, rgbShift: 0, ribbed: 0 };
+let fxAtDrag   = { water: 0, fragment: 0, rgbShift: 0, chromaBloom: 0 };
+
+/* ---- HOVER ANIMATION: brings water and chroma bloom to life on hover ----
+   Only effects already dialled in above zero are animated, so hovering never
+   introduces distortion the user did not ask for. The bloom angle is a local
+   value derived from FX_ANGLE rather than a mutation of it, which keeps the
+   RGB shift's diagonal fixed while the fringe rotates. ---- */
+let hoverRAF = null;
+
+function stopHoverFX() {
+    if (hoverRAF === null) return;
+    cancelAnimationFrame(hoverRAF);
+    hoverRAF = null;
+    // Settle back to the static rendering the sliders describe, so water
+    // cannot be left stranded at a drifted frequency.
+    applyWater();
+    renderCanvas();
+}
+
+function startHoverFX() {
+    if (hoverRAF !== null) return;
+    const t0 = performance.now();
+    const step = (now) => {
+        /* Driven by the frame timestamp rather than a per frame increment, so
+           the drift takes the same wall clock time on a 60Hz and a 120Hz
+           display, and the periods above mean actual seconds. */
+        const elapsed = (now - t0) / 1000;
+        if (FX.water < 1 && FX.chromaBloom <= 0) { stopHoverFX(); return; }
+        if (FX.water >= 1) applyWater(elapsed);
+        if (FX.chromaBloom > 0) {
+            renderCanvas(FX_ANGLE + 2 * Math.PI * elapsed / HOVER_BLOOM_PERIOD);
+        }
+        hoverRAF = requestAnimationFrame(step);
+    };
+    hoverRAF = requestAnimationFrame(step);
+}
 
 if (!isMobile) {
-    titleWrap.addEventListener('mouseenter', () => setCursorState(true, 'Drag'));
-    titleWrap.addEventListener('mouseleave', () => { if (!isDragging) setCursorState(false); });
+    titleWrap.addEventListener('mouseenter', () => {
+        setCursorState(true, 'Drag');
+        if (FX.water >= 1 || FX.chromaBloom > 0) startHoverFX();
+    });
+    titleWrap.addEventListener('mouseleave', () => {
+        if (!isDragging) setCursorState(false);
+        stopHoverFX();
+    });
 
     titleWrap.addEventListener('mousedown', e => {
         isDragging = true;
@@ -1811,7 +1929,7 @@ if (!isMobile) {
         FX.water    = clamp(fxAtDrag.water    + dx * 80,  0, 40);
         FX.rgbShift = clamp(fxAtDrag.rgbShift + dx * 20,  0, 10);
         FX.fragment = clamp(fxAtDrag.fragment + dy * 30,  0, 15);
-        FX.ribbed   = clamp(fxAtDrag.ribbed   + dy * 200, 0, 100);
+        FX.chromaBloom = clamp(fxAtDrag.chromaBloom + dy * 200, 0, 100);
 
         pushFX();
     });
@@ -1826,21 +1944,22 @@ document.getElementById('randomise-btn').addEventListener('click', () => {
     FX.water    = Math.random() * 40;
     FX.fragment = Math.random() * 15;
     FX.rgbShift = Math.random() * 10;
-    FX.ribbed   = Math.random() * 100;
+    FX.chromaBloom = Math.random() * 100;
     pushFX();
 });
 
 document.getElementById('reset-btn').addEventListener('click', () => {
-    FX.water = FX.fragment = FX.rgbShift = FX.ribbed = 0;
-    // Clear all effects directly — don't rely on fontsLoaded guard in renderCanvas
+    FX.water = FX.fragment = FX.rgbShift = FX.chromaBloom = 0;
+    stopHoverFX();
+    // Clear all effects directly, don't rely on fontsLoaded guard in renderCanvas
     titleWrap.style.filter = 'none';
     document.querySelectorAll('.hero-title .line').forEach(l => l.style.textShadow = '');
     heroTitleEl.style.opacity = '1';
     resizeCanvas();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     // Sync slider UI
-    slInputs.water.value = slInputs.frag.value = slInputs.rgb.value = slInputs.ribbed.value = '0';
-    slVals.water.textContent = slVals.frag.textContent = slVals.rgb.textContent = slVals.ribbed.textContent = '0';
+    slInputs.water.value = slInputs.frag.value = slInputs.rgb.value = slInputs.bloom.value = '0';
+    slVals.water.textContent = slVals.frag.textContent = slVals.rgb.textContent = slVals.bloom.textContent = '0';
 });
 
 /* ============================================================
@@ -1874,7 +1993,7 @@ setupReveals();
     }, 3000);
 })();
 
-/* Portrait: pre-rendered as portrait_divide.png — no canvas needed */
+/* Portrait: pre-rendered as portrait_divide.png, no canvas needed */
 
 /* ============================================================
    PORTRAIT TOGGLE (click / tap)
