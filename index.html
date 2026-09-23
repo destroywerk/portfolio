@@ -115,7 +115,7 @@ a { text-decoration: none; color: inherit; }
 @media (hover: none) {
     .cursor { display: none; }
     body, a, button, .project-card, .interest-card, .portrait-wrap,
-    .footer-email, .sl-track, .hero-title-wrap { cursor: auto !important; }
+    .footer-email, .hero-title-wrap { cursor: auto !important; }
 }
 
 /* ===== NAV ===== */
@@ -175,29 +175,6 @@ nav {
     pointer-events: none;
 }
 .hero-title .line { display: block; }
-
-/* frag strips overlay (populated by JS) */
-.frag-wrap {
-    position: absolute; inset: 0;
-    pointer-events: none;
-    z-index: 2;
-    opacity: 0;
-}
-.frag-strip {
-    position: absolute; inset: 0;
-    will-change: transform;
-    overflow: visible;
-}
-/* frag copy of the title: must match hero-title exactly */
-.frag-title {
-    font-size: clamp(5rem, 16vw, 18rem);
-    font-weight: 800;
-    line-height: 0.84;
-    color: #fff;
-    letter-spacing: -0.03em;
-    pointer-events: none;
-}
-.frag-title .line { display: block; }
 
 /* dissolve canvas */
 .fx-canvas {
@@ -514,22 +491,11 @@ input[type=range]:active::-webkit-slider-thumb {
     color: #fff; letter-spacing: -0.03em; line-height: 1.05;
     padding-right: 4rem;
 }
-.statement-aside { }
 .statement-bio {
     max-width: 680px; font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,0.55);
     font-family: var(--font-body);
 }
 .statement-bio strong { color: rgba(255,255,255,0.85); font-weight: 600; }
-
-/* ===== STATS ===== */
-.stats {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 1px; background: var(--border);
-    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
-}
-.stat-cell { background: var(--bg); padding: 3rem 2.5rem; }
-.stat-num { font-size: clamp(3rem, 7vw, 6rem); font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
-.stat-desc { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: normal; color: var(--muted); margin-top: 0.75rem; }
 
 /* ===== INTERESTS ===== */
 .interests { padding: 6rem 2.5rem; }
@@ -1278,8 +1244,6 @@ function scramble(el, target, opts = {}) {
 /* ============================================================
    HERO SCRAMBLE INIT
    ============================================================ */
-const heroLine1 = document.getElementById('hero-line-1');
-const heroLine2 = document.getElementById('hero-line-2');
 const descriptor = document.getElementById('descriptor');
 let descIdx = 0;
 
@@ -1993,7 +1957,7 @@ setupReveals();
     }, 3000);
 })();
 
-/* Portrait: pre-rendered as portrait_divide.png, no canvas needed */
+/* Portrait: pre-rendered as portrait-divide.png, no canvas needed */
 
 /* ============================================================
    PORTRAIT TOGGLE (click / tap)

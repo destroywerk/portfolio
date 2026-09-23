@@ -1,3 +1,17 @@
+# macOS finder metadata
 .DS_Store
-assets/.DS_Store
-Screenshot*
+**/.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+
+# Screenshots dropped into the repo by macOS
+Screenshot*.png
+Screen Shot*.png
+
+# Editor scratch files
+*.swp
+*~
